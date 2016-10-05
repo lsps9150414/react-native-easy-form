@@ -5,6 +5,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { formFieldContextTypes, formPropTypes } from './propTypes';
 
 import TextInputField from './formFields/TextInputField';
 
@@ -14,10 +15,14 @@ export default class EasyForm extends React.Component {
     this.state = {
       formValues: {},
     };
+
+    console.log(formFieldContextTypes);
   }
 
   getChildContext = () => ({
     handleValueChange: this.getFormFieldValue,
+    labelContainerStyles: this.props.labelContainerStyles,
+    inputContainerStyles: this.props.inputContainerStyles,
   })
 
   getFormFieldValue = (fieldName, value) => {
@@ -37,14 +42,13 @@ export default class EasyForm extends React.Component {
 }
 
 EasyForm.propTypes = {
-  onFormValueChange: PropTypes.func.isRequired,
-  formStyles: View.propTypes.style,
+  ...formPropTypes,
 };
 
 EasyForm.defaultProps = {};
 
 EasyForm.childContextTypes = {
-  handleValueChange: PropTypes.func.isRequired,
+  ...formFieldContextTypes,
 };
 
 EasyForm.TextInputField = TextInputField;

@@ -7,14 +7,13 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-import { formFieldContextTypes, formFieldPropTypes } from './PropTypes';
+import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 
 import { formFieldStyles } from '../styles';
 
 const styles = StyleSheet.create({
   textInput: {
     flex: 1,
-    backgroundColor: 'yellow',
   },
 });
 
@@ -25,13 +24,14 @@ export default class TextInputField extends React.Component {
   render() {
     return (
       <View style={[formFieldStyles.fieldGroup]}>
-        <View style={[formFieldStyles.labelContainer]}>
+        <View style={[formFieldStyles.labelContainer, this.context.labelContainerStyles]}>
           <Text>{this.props.title}</Text>
         </View>
-        <View style={[formFieldStyles.inputContainer]}>
+        <View style={[formFieldStyles.inputContainer, this.context.inputContainerStyles]}>
           <TextInput
             style={[styles.textInput]}
             onChangeText={this.handleValueChange}
+            {...this.props}
           />
         </View>
       </View>
@@ -41,12 +41,11 @@ export default class TextInputField extends React.Component {
 
 TextInputField.propTypes = {
   ...formFieldPropTypes,
-  title: PropTypes.string.isRequired,
-};
-
-TextInputField.contextTypes = {
-  ...formFieldContextTypes,
-  color: React.PropTypes.string
+  ...TextInput.propTypes,
 };
 
 TextInputField.defaultProps = {};
+
+TextInputField.contextTypes = {
+  ...formFieldContextTypes,
+};
