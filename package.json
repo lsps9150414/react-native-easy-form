@@ -1,0 +1,31 @@
+{
+  "name": "react-native-easy-form",
+  "version": "1.0.0",
+  "description": "A modulized customizable easy to use React Native form component.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git"
+  },
+  "keywords": [
+    "react-native",
+    "react",
+    "form",
+    "component",
+    "easy"
+  ],
+  "author": "Philip Chen <lsps9150414@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-eslint": "^7.0.0",
+    "eslint": "^3.7.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^2.0.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-react": "^6.3.0",
+    "react-native": "^0.34.1"
+  }
+}
