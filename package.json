@@ -1,7 +1,7 @@
 {
   "name": "react-native-easy-form",
-  "version": "1.0.0",
-  "description": "A modulized customizable easy to use React Native form component.",
+  "version": "0.0.1",
+  "description": "An easy to use modularized and customizable React Native form component.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
