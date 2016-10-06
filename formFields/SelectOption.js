@@ -12,7 +12,7 @@ import { optionContextTypes } from '../propTypes/selectField';
 
 const propTypes = {
   title: PropTypes.string.isRequired,
-  value: PropTypes.any.isRequired,
+  value: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
 };
 const defaultProps = {
@@ -52,7 +52,7 @@ export default class SelectOption extends Component {
   }
   handleOnPress = () => {
     if (!this.props.disabled) {
-      this.context.handleOnPress(this.props.value);
+      this.context.handleOnPress(String(this.props.value));
     }
   }
   render() {

@@ -47,7 +47,7 @@ export default class GridSelectField extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValues: {},
+      selectedValues: this.getDefaultSelectedOptions() || {},
     };
     this.rowCount = Math.ceil(React.Children.count(props.children) / props.numberOfItemsInOneRow);
   }
@@ -60,10 +60,35 @@ export default class GridSelectField extends Component {
     this.fieldHeight = this.context.baseGridHeight ?
       (this.context.baseGridHeight * this.rowCount) : (BASE_GRID_HEIGHT * this.rowCount);
   }
-
-  handleValueChange = (value) => {
-    this.context.handleValueChange(this.props.name, value);
+  componentDidMount() {
+    this.initDefaultValues();
   }
+
+  getDefaultSelectedOptions = () => {
+    if (this.props.multipleSelections) {
+      const defaultSelectedOptions = {};
+      React.Children.forEach(this.props.children, child => {
+        if (child.props.selected) {
+          defaultSelectedOptions[child.props.value] = true;
+        }
+      });
+      return defaultSelectedOptions;
+    }
+    const defaultSelectedOption =
+      React.Children.toArray(this.props.children)
+        .find(child => child.props.selected)
+        .props.value;
+    return { [defaultSelectedOption]: true };
+  }
+  initDefaultValues = () => {
+    console.log('initDefaultValues', this.props.name, this.state.selectedValues);
+    if (this.props.multipleSelections) {
+      this.handleValueChange(this.state.selectedValues);
+    } else {
+      this.handleValueChange(Object.keys(this.state.selectedValues)[0]);
+    }
+  }
+
   handleOptionOnPress = (value) => {
     this.toggleSelected(value);
   }
@@ -84,6 +109,9 @@ export default class GridSelectField extends Component {
         () => { this.handleValueChange(value); }
       );
     }
+  }
+  handleValueChange = (value) => {
+    this.context.handleValueChange(this.props.name, value);
   }
 
   renderOptionRows = () => {
