@@ -44,7 +44,7 @@ export default class TextInputField extends React.Component {
           <TextInput
             style={[styles.textInput]}
             onChangeText={this.handleValueChange}
-            {...this.props}
+            {...{ ...this.props, value: this.context.formData[this.props.name] }}
           />
         </View>
       </View>

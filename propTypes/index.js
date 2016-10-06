@@ -29,4 +29,5 @@ export const formFieldPropTypes = {
 export const formFieldContextTypes = {
   ...formToFieldPropTypes,
   handleValueChange: PropTypes.func.isRequired,
+  formData: PropTypes.object.isRequired,
 };

@@ -61,6 +61,9 @@ export default class SelectField extends Component {
   })
 
   componentWillMount() {
+    if (Boolean(this.context.formData[this.props.name])) {
+      this.setState({ selectedValues: this.context.formData[this.props.name] });
+    }
     this.fieldHeight = this.context.baseGridHeight ?
       (this.context.baseGridHeight * this.rowCount) : (BASE_GRID_HEIGHT * this.rowCount);
     this.initDefaultSelectedValues();

@@ -21,10 +21,11 @@ export default class EasyForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formValues: {},
+      formData: this.props.formData || {},
     };
   }
   getChildContext = () => ({
+    formData: this.state.formData,
     handleValueChange: this.handleFormFieldValueChange,
     labelContainerStyles: this.props.labelContainerStyles,
     inputContainerStyles: this.props.inputContainerStyles,
@@ -33,10 +34,9 @@ export default class EasyForm extends React.Component {
   })
 
   handleFormFieldValueChange = (fieldName, value) => {
-    console.log('[Setting state]', fieldName, value);
     this.setState(
-      (previousState) => ({ formValues: { ...previousState.formValues, [fieldName]: value } }),
-      () => { console.log('[State set]', this.state.formValues); this.props.onFormValueChange(this.state.formValues); }
+      (previousState) => ({ formData: { ...previousState.formData, [fieldName]: value } }),
+      () => { this.props.onFormValueChange(this.state.formData); }
     );
   }
   render() {
