@@ -27,6 +27,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  text: {
+    textAlign: 'center',
+  },
   selected: {
     backgroundColor: '#666',
   },
@@ -72,6 +75,7 @@ export default class SelectOption extends Component {
       >
         <Text
           style={[
+            styles.text,
             selected && styles.selectedText,
             selected && Boolean(this.activeTextColor) && { color: this.activeTextColor },
             this.props.disabled && styles.disabledText,

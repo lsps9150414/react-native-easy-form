@@ -18,11 +18,13 @@ import { optionContextTypes } from '../propTypes/selectField';
 
 const propTypes = {
   ...formFieldPropTypes,
-  multipleSelections: PropTypes.bool,
   numberOfItemsInOneRow: PropTypes.number,
+  multipleSelections: PropTypes.bool,
+  grid: PropTypes.bool,
 };
 const defaultProps = {
   multipleSelections: false,
+  grid: false,
 };
 const contextTypes = {
   ...formFieldContextTypes,
@@ -43,13 +45,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class GridSelectField extends Component {
+export default class SelectField extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedValues: this.getDefaultSelectedOptions() || {},
     };
-    this.rowCount = Math.ceil(React.Children.count(props.children) / props.numberOfItemsInOneRow);
+    this.rowCount = props.grid ?
+      Math.ceil(React.Children.count(props.children) / props.numberOfItemsInOneRow)
+      : React.Children.count(props.children);
   }
   getChildContext = () => ({
     selectedValues: this.state.selectedValues,
@@ -139,6 +143,11 @@ export default class GridSelectField extends Component {
       return optionRow;
     });
   }
+  renderOptionList = () => {
+    const childrenArray = React.Children.toArray(this.props.children);
+    return insertSeparator(childrenArray, Separator);
+  }
+
   render() {
     return (
       <View
@@ -155,7 +164,8 @@ export default class GridSelectField extends Component {
             this.context.inputContainerStyles,
           ]}
         >
-          {this.renderOptionRows()}
+          {!this.props.grid && this.renderOptionList()}
+          {this.props.grid && this.renderOptionRows()}
         </View>
       </View>
     );
@@ -163,7 +173,7 @@ export default class GridSelectField extends Component {
 
 }
 
-GridSelectField.propTypes = propTypes;
-GridSelectField.defaultProps = defaultProps;
-GridSelectField.contextTypes = contextTypes;
-GridSelectField.childContextTypes = childContextTypes;
+SelectField.propTypes = propTypes;
+SelectField.defaultProps = defaultProps;
+SelectField.contextTypes = contextTypes;
+SelectField.childContextTypes = childContextTypes;
