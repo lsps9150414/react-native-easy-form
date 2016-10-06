@@ -7,6 +7,7 @@ import { formFieldContextTypes, formPropTypes } from './propTypes';
 import TextInputField from './formFields/TextInputField';
 import GridSelectField from './formFields/GridSelectField';
 import SelectOption from './formFields/SelectOption';
+import Seperator from './components/Separator';
 
 const propTypes = {
   ...formPropTypes,
@@ -53,3 +54,4 @@ EasyForm.childContextTypes = childContextTypes;
 EasyForm.TextInputField = TextInputField;
 EasyForm.GridSelectField = GridSelectField;
 EasyForm.SelectOption = SelectOption;
+EasyForm.Seperator = Seperator;

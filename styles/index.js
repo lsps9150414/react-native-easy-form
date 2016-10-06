@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
 export const formFieldStyles = StyleSheet.create({
   fieldGroup: {
     flexDirection: 'row',
-    borderBottomWidth: StyleSheet.hairlineWidth,
     height: BASE_GRID_HEIGHT,
   },
   labelContainer: {

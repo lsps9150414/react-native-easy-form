@@ -10,7 +10,10 @@ import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 
 import { BASE_GRID_HEIGHT } from '../constants/layout';
 import Label from './Label';
+import Separator from '../components/Separator';
+import SeperatorVertical from '../components/SeperatorVertical';
 import { formFieldStyles } from '../styles';
+import { insertSeparator } from '../utils';
 import { optionContextTypes } from '../propTypes/selectField';
 
 const propTypes = {
@@ -82,6 +85,7 @@ export default class GridSelectField extends Component {
       );
     }
   }
+
   renderOptionRows = () => {
     if (!Boolean(this.props.numberOfItemsInOneRow)) {
       return (
@@ -90,16 +94,25 @@ export default class GridSelectField extends Component {
         </View>
       );
     }
+    // Slice options into rows.
     const optionRows = [];
     const childrenArray = React.Children.toArray(this.props.children);
     while (childrenArray.length > 0) {
       optionRows.push(childrenArray.splice(0, this.props.numberOfItemsInOneRow));
     }
-    return optionRows.map((row, index) => (
-      <View key={`optionRows-${index}`} style={styles.optionRowContainer}>
-        {row.map(option => option)}
-      </View>
-    ));
+    const optionRowsWithSeperator = insertSeparator(optionRows, Separator);
+
+    return optionRowsWithSeperator.map((optionRow, index) => {
+      if (Array.isArray(optionRow)) {
+        const rowItemsWithSeperator = insertSeparator(optionRow, SeperatorVertical);
+        return (
+          <View key={`optionRows-${index}`} style={styles.optionRowContainer}>
+          {rowItemsWithSeperator.map(item => item)}
+          </View>
+        );
+      }
+      return optionRow;
+    });
   }
   render() {
     return (
