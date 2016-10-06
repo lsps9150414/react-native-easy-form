@@ -1,13 +1,20 @@
-import React, {
-  PropTypes,
-} from 'react';
+import React from 'react';
 import {
-  Text,
   View,
 } from 'react-native';
 import { formFieldContextTypes, formPropTypes } from './propTypes';
 
 import TextInputField from './formFields/TextInputField';
+import GridSelectField from './formFields/GridSelectField';
+import SelectOption from './formFields/SelectOption';
+
+const propTypes = {
+  ...formPropTypes,
+};
+const defaultProps = {};
+const childContextTypes = {
+  ...formFieldContextTypes,
+};
 
 export default class EasyForm extends React.Component {
   constructor(props) {
@@ -15,17 +22,15 @@ export default class EasyForm extends React.Component {
     this.state = {
       formValues: {},
     };
-
-    console.log(formFieldContextTypes);
   }
-
   getChildContext = () => ({
-    handleValueChange: this.getFormFieldValue,
+    handleValueChange: this.handleFormFieldValueChange,
     labelContainerStyles: this.props.labelContainerStyles,
     inputContainerStyles: this.props.inputContainerStyles,
+    theme: this.props.theme,
   })
 
-  getFormFieldValue = (fieldName, value) => {
+  handleFormFieldValueChange = (fieldName, value) => {
     this.setState(
       { formValues: { ...this.state.formValues, [fieldName]: value } },
       () => { this.props.onFormValueChange(this.state.formValues); }
@@ -34,21 +39,16 @@ export default class EasyForm extends React.Component {
   render() {
     return (
       <View>
-        <Text>EasyForm</Text>
         {this.props.children}
       </View>
     );
   }
 }
 
-EasyForm.propTypes = {
-  ...formPropTypes,
-};
-
-EasyForm.defaultProps = {};
-
-EasyForm.childContextTypes = {
-  ...formFieldContextTypes,
-};
+EasyForm.propTypes = propTypes;
+EasyForm.defaultProps = defaultProps;
+EasyForm.childContextTypes = childContextTypes;
 
 EasyForm.TextInputField = TextInputField;
+EasyForm.GridSelectField = GridSelectField;
+EasyForm.SelectOption = SelectOption;

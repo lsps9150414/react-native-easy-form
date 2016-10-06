@@ -1,11 +1,15 @@
-import {
-  Text,
-  View,
-} from 'react-native';
+import { Text, View } from 'react-native';
 
 import { PropTypes } from 'react';
 
 export const formToFieldPropTypes = {
+  theme: PropTypes.shape({
+    activeColor: PropTypes.string,
+    disabledColor: PropTypes.string,
+    textColor: PropTypes.string,
+    activeTextColor: PropTypes.string,
+    disabledTextColor: PropTypes.string,
+  }),
   labelContainerStyles: View.propTypes.style,
   inputContainerStyles: View.propTypes.style,
 };

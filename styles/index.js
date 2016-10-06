@@ -11,6 +11,9 @@ export const formFieldStyles = StyleSheet.create({
     backgroundColor: '#ddd',
     justifyContent: 'center',
   },
+  label: {
+    textAlign: 'center',
+  },
   inputContainer: {
     flex: 3,
   },

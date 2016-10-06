@@ -2,14 +2,24 @@ import React, {
   PropTypes,
 } from 'react';
 import {
+  StyleSheet,
   Text,
   TextInput,
   View,
-  StyleSheet,
 } from 'react-native';
 import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 
+import Label from './Label';
 import { formFieldStyles } from '../styles';
+
+const propTypes = {
+  ...formFieldPropTypes,
+  ...TextInput.propTypes,
+};
+const defaultProps = {};
+const contextTypes = {
+  ...formFieldContextTypes,
+};
 
 const styles = StyleSheet.create({
   textInput: {
@@ -24,9 +34,7 @@ export default class TextInputField extends React.Component {
   render() {
     return (
       <View style={[formFieldStyles.fieldGroup]}>
-        <View style={[formFieldStyles.labelContainer, this.context.labelContainerStyles]}>
-          <Text>{this.props.title}</Text>
-        </View>
+        <Label title={this.props.title} labelContainerStyles={this.context.labelContainerStyles} />
         <View style={[formFieldStyles.inputContainer, this.context.inputContainerStyles]}>
           <TextInput
             style={[styles.textInput]}
@@ -39,13 +47,6 @@ export default class TextInputField extends React.Component {
   }
 }
 
-TextInputField.propTypes = {
-  ...formFieldPropTypes,
-  ...TextInput.propTypes,
-};
-
-TextInputField.defaultProps = {};
-
-TextInputField.contextTypes = {
-  ...formFieldContextTypes,
-};
+TextInputField.propTypes = propTypes;
+TextInputField.defaultProps = defaultProps;
+TextInputField.contextTypes = contextTypes;
