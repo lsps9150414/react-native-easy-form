@@ -3,8 +3,8 @@ import React, {
   PropTypes,
 } from 'react';
 import {
-  StyleSheet,
   View,
+  StyleSheet,
 } from 'react-native';
 import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 
@@ -15,7 +15,7 @@ import { optionContextTypes } from '../propTypes/selectField';
 const propTypes = {
   ...formFieldPropTypes,
   multipleSelections: PropTypes.bool,
-  numberOfRows: PropTypes.number,
+  numberOfItemsInOneRow: PropTypes.number,
 };
 const defaultProps = {
   multipleSelections: false,
@@ -29,7 +29,13 @@ const childContextTypes = {
 
 const styles = StyleSheet.create({
   inputContainer: {
+    flexDirection: 'column',
+  },
+  optionRowContainer: {
+    flex: 1,
     flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
   },
 });
 
@@ -69,7 +75,26 @@ export default class GridSelectField extends Component {
       );
     }
   }
-  renderOptions = () => React.Children.map(this.props.children, child => child)
+  renderOptionRows = () => {
+    if (!Boolean(this.props.numberOfItemsInOneRow)) {
+      return (
+        <View style={styles.optionRowContainer}>
+          {React.Children.map(this.props.children, child => child)}
+        </View>
+      );
+    }
+    const optionRows = [];
+    const childrenArray = React.Children.toArray(this.props.children);
+    while (childrenArray.length > 0) {
+      optionRows.push(childrenArray.splice(0, this.props.numberOfItemsInOneRow));
+      console.log(optionRows);
+    }
+    return optionRows.map((row, index) => (
+      <View key={`optionRows-${index}`} style={styles.optionRowContainer}>
+        {row.map(option => option)}
+      </View>
+    ));
+  }
   render() {
     return (
       <View style={[formFieldStyles.fieldGroup]}>
@@ -81,7 +106,7 @@ export default class GridSelectField extends Component {
             this.context.inputContainerStyles,
           ]}
         >
-          {this.renderOptions()}
+          {this.renderOptionRows()}
         </View>
       </View>
     );
