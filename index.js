@@ -28,6 +28,7 @@ export default class EasyForm extends React.Component {
     labelContainerStyles: this.props.labelContainerStyles,
     inputContainerStyles: this.props.inputContainerStyles,
     theme: this.props.theme,
+    baseGridHeight: this.props.baseGridHeight,
   })
 
   handleFormFieldValueChange = (fieldName, value) => {

@@ -3,11 +3,12 @@ import React, {
   PropTypes,
 } from 'react';
 import {
-  View,
   StyleSheet,
+  View,
 } from 'react-native';
 import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 
+import { BASE_GRID_HEIGHT } from '../constants/layout';
 import Label from './Label';
 import { formFieldStyles } from '../styles';
 import { optionContextTypes } from '../propTypes/selectField';
@@ -45,11 +46,17 @@ export default class GridSelectField extends Component {
     this.state = {
       selectedValues: {},
     };
+    this.rowCount = Math.ceil(React.Children.count(props.children) / props.numberOfItemsInOneRow);
   }
   getChildContext = () => ({
     selectedValues: this.state.selectedValues,
     handleOnPress: this.handleOptionOnPress,
   })
+
+  componentWillMount() {
+    this.fieldHeight = this.context.baseGridHeight ?
+      (this.context.baseGridHeight * this.rowCount) : (BASE_GRID_HEIGHT * this.rowCount);
+  }
 
   handleValueChange = (value) => {
     this.context.handleValueChange(this.props.name, value);
@@ -87,7 +94,6 @@ export default class GridSelectField extends Component {
     const childrenArray = React.Children.toArray(this.props.children);
     while (childrenArray.length > 0) {
       optionRows.push(childrenArray.splice(0, this.props.numberOfItemsInOneRow));
-      console.log(optionRows);
     }
     return optionRows.map((row, index) => (
       <View key={`optionRows-${index}`} style={styles.optionRowContainer}>
@@ -97,7 +103,12 @@ export default class GridSelectField extends Component {
   }
   render() {
     return (
-      <View style={[formFieldStyles.fieldGroup]}>
+      <View
+        style={[
+          formFieldStyles.fieldGroup,
+          { height: this.fieldHeight },
+        ]}
+      >
         <Label title={this.props.title} labelContainerStyles={this.context.labelContainerStyles} />
         <View
           style={[

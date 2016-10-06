@@ -10,6 +10,7 @@ export const formToFieldPropTypes = {
     activeTextColor: PropTypes.string,
     disabledTextColor: PropTypes.string,
   }),
+  baseGridHeight: PropTypes.number,
   labelContainerStyles: View.propTypes.style,
   inputContainerStyles: View.propTypes.style,
 };
