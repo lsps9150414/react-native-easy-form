@@ -45,18 +45,16 @@ export default class GridSelectField extends Component {
     handleOnPress: this.handleOptionOnPress,
   })
 
-  // componentWillMount() {
-  //   this.getOptionValues();
-  // }
-  // getOptionValues = () => (
-  //   React.Children.map(this.props.children, child => (child.props.value))
-  // )
-
   handleValueChange = (value) => {
     this.context.handleValueChange(this.props.name, value);
   }
   handleOptionOnPress = (value) => {
     this.toggleSelected(value);
+    if (this.props.multipleSelections) {
+      this.handleValueChange(this.state.selectedValues);
+    } else {
+      this.handleValueChange(value);
+    }
   }
   toggleSelected = (value) => {
     if (this.props.multipleSelections) {
