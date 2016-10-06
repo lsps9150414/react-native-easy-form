@@ -78,9 +78,12 @@ export default class SelectField extends Component {
     }
     const defaultSelectedOption =
       React.Children.toArray(this.props.children)
-        .find(child => child.props.selected)
-        .props.value;
-    return { [defaultSelectedOption]: true };
+      .find(child => child.props.selected);
+
+    if (defaultSelectedOption) {
+      return { [defaultSelectedOption.props.value]: true };
+    }
+    return null;
   }
   initDefaultSelectedValues = () => {
     if (this.props.multipleSelections) {
