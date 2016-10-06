@@ -33,9 +33,10 @@ export default class EasyForm extends React.Component {
   })
 
   handleFormFieldValueChange = (fieldName, value) => {
+    console.log('[Setting state]', fieldName, value);
     this.setState(
-      { formValues: { ...this.state.formValues, [fieldName]: value } },
-      () => { console.log(this.state.formValues); this.props.onFormValueChange(this.state.formValues); }
+      (previousState) => ({ formValues: { ...previousState.formValues, [fieldName]: value } }),
+      () => { console.log('[State set]', this.state.formValues); this.props.onFormValueChange(this.state.formValues); }
     );
   }
   render() {

@@ -59,9 +59,7 @@ export default class GridSelectField extends Component {
   componentWillMount() {
     this.fieldHeight = this.context.baseGridHeight ?
       (this.context.baseGridHeight * this.rowCount) : (BASE_GRID_HEIGHT * this.rowCount);
-  }
-  componentDidMount() {
-    this.initDefaultValues();
+    this.initDefaultSelectedValues();
   }
 
   getDefaultSelectedOptions = () => {
@@ -80,8 +78,7 @@ export default class GridSelectField extends Component {
         .props.value;
     return { [defaultSelectedOption]: true };
   }
-  initDefaultValues = () => {
-    console.log('initDefaultValues', this.props.name, this.state.selectedValues);
+  initDefaultSelectedValues = () => {
     if (this.props.multipleSelections) {
       this.handleValueChange(this.state.selectedValues);
     } else {
