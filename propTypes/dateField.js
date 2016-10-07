@@ -6,4 +6,6 @@ export const datePickerPropTypes = {
   ...formToFieldPropTypes,
   cancelBtnText: PropTypes.string,
   confirmBtnText: PropTypes.string,
+  maxDate: PropTypes.instanceOf(Date),
+  minDate: PropTypes.instanceOf(Date),
 };

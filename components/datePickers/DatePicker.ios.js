@@ -21,7 +21,7 @@ import moment from 'moment';
 
 const propTypes = {
   ...datePickerPropTypes,
-  date: PropTypes.object.isRequired,
+  date: PropTypes.instanceOf(Date).isRequired,
   onDateChange: PropTypes.func.isRequired,
 };
 
@@ -140,6 +140,8 @@ export default class DatePickerIos extends Component {
       mode={'date'}
       date={this.state.date}
       onDateChange={this.onDateChange}
+      minimumDate={this.props.minDate}
+      maximumDate={this.props.maxDate}
     />
   );
   renderModal = () => (

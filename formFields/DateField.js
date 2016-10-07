@@ -65,6 +65,8 @@ export default class DateField extends Component {
             theme={this.context.theme}
             cancelBtnText={this.props.cancelBtnText}
             confirmBtnText={this.props.confirmBtnText}
+            maxDate={this.props.maxDate}
+            minDate={this.props.minDate}
           />
         </View>
       </View>
