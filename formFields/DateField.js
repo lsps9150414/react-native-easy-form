@@ -1,33 +1,28 @@
-import React from 'react';
-import {
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import React, {
+  Component,
+  PropTypes,
+} from 'react';
 import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 
 import Label from './Label';
+import {
+  View,
+  TouchableHighlight,
+} from 'react-native';
 import { formFieldStyles } from '../styles';
 
 const propTypes = {
   ...formFieldPropTypes,
-  ...TextInput.propTypes,
 };
+
 const defaultProps = {};
+
 const contextTypes = {
   ...formFieldContextTypes,
 };
 
-const styles = StyleSheet.create({
-  textInput: {
-    flex: 1,
-  },
-});
+export default class DateField extends Component {
 
-export default class TextInputField extends React.Component {
-  handleValueChange = (value) => {
-    this.context.handleValueChange(this.props.name, value);
-  }
   render() {
     return (
       <View
@@ -38,18 +33,21 @@ export default class TextInputField extends React.Component {
       >
         <Label title={this.props.title} labelContainerStyles={this.context.labelContainerStyles} />
         <View style={[formFieldStyles.inputContainer, this.context.inputContainerStyles]}>
+          <TouchableHighlight>
+
+          </TouchableHighlight>
           <TextInput
-            style={[formFieldStyles.inputText, styles.textInput]}
+            style={[formFieldStyles.inputText]}
             onChangeText={this.handleValueChange}
-            {...this.props}
-            value={this.context.formData[this.props.name]}
+            {...{ ...this.props, value: this.context.formData[this.props.name] }}
           />
         </View>
       </View>
     );
   }
+
 }
 
-TextInputField.propTypes = propTypes;
-TextInputField.defaultProps = defaultProps;
-TextInputField.contextTypes = contextTypes;
+DateField.propTypes = propTypes;
+DateField.defaultProps = defaultProps;
+DateField.contextTypes = contextTypes;

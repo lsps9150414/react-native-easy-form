@@ -4,6 +4,6 @@ import { formToFieldPropTypes } from './index';
 
 export const optionContextTypes = {
   ...formToFieldPropTypes,
-  selectedValues: PropTypes.object.isRequired,
+  selectedOptions: PropTypes.object.isRequired,
   handleOnPress: PropTypes.func.isRequired,
 };

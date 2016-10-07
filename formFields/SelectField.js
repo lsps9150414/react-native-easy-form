@@ -49,50 +49,34 @@ export default class SelectField extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValues: this.getDefaultSelectedOptions() || {},
+      selectedOptions: {},
     };
     this.rowCount = props.grid ?
       Math.ceil(React.Children.count(props.children) / props.numberOfItemsInOneRow)
       : React.Children.count(props.children);
   }
   getChildContext = () => ({
-    selectedValues: this.state.selectedValues,
+    selectedOptions: this.state.selectedOptions,
     handleOnPress: this.handleOptionOnPress,
   })
 
   componentWillMount() {
-    if (Boolean(this.context.formData[this.props.name])) {
-      this.setState({ selectedValues: this.context.formData[this.props.name] });
-    }
+    this.setFieldHeight();
+    this.updateSelectedFromFormData();
+  }
+  // componentWillReceiveProps(nextProps, nextContext) {
+  //   if (nextContext.formData[this.props.name] !== this.context.formData[this.props.name]) {
+  //     // this.setState({ selectedOptions: nextContext.formData[this.props.name] });
+  //     console.log('context changed');
+  //   }
+  // }
+  setFieldHeight = () => {
     this.fieldHeight = this.context.baseGridHeight ?
       (this.context.baseGridHeight * this.rowCount) : (BASE_GRID_HEIGHT * this.rowCount);
-    this.initDefaultSelectedValues();
   }
-
-  getDefaultSelectedOptions = () => {
-    if (this.props.multipleSelections) {
-      const defaultSelectedOptions = {};
-      React.Children.forEach(this.props.children, child => {
-        if (child.props.selected) {
-          defaultSelectedOptions[child.props.value] = true;
-        }
-      });
-      return defaultSelectedOptions;
-    }
-    const defaultSelectedOption =
-      React.Children.toArray(this.props.children)
-      .find(child => child.props.selected);
-
-    if (defaultSelectedOption) {
-      return { [defaultSelectedOption.props.value]: true };
-    }
-    return null;
-  }
-  initDefaultSelectedValues = () => {
-    if (this.props.multipleSelections) {
-      this.handleValueChange(this.state.selectedValues);
-    } else {
-      this.handleValueChange(Object.keys(this.state.selectedValues)[0]);
+  updateSelectedFromFormData = () => {
+    if (Boolean(this.context.formData[this.props.name])) {
+      this.setState({ selectedOptions: this.context.formData[this.props.name] });
     }
   }
 
@@ -101,18 +85,22 @@ export default class SelectField extends Component {
   }
   toggleSelected = (value) => {
     if (this.props.multipleSelections) {
-      this.setState(
-        {
-          selectedValues: {
-            ...this.state.selectedValues,
-            [value]: !this.state.selectedValues[value],
-          },
-        },
-        () => { this.handleValueChange(this.state.selectedValues); }
-      );
+      if (Boolean(this.state.selectedOptions[value])) {
+        const updatedSelectedOptions = this.state.selectedOptions;
+        delete updatedSelectedOptions[value];
+        this.setState(
+          { selectedOptions: updatedSelectedOptions },
+          () => { this.handleValueChange(this.state.selectedOptions); }
+        );
+      } else {
+        this.setState(
+          { selectedOptions: { ...this.state.selectedOptions, [value]: true } },
+          () => { this.handleValueChange(this.state.selectedOptions); }
+        );
+      }
     } else {
       this.setState(
-        { selectedValues: { [value]: true } },
+        { selectedOptions: { [value]: true } },
         () => { this.handleValueChange(value); }
       );
     }
