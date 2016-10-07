@@ -61,11 +61,15 @@ export default class DatePickerIos extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      date: props.date,
       modalVisible: false,
       animatedHeight: new Animated.Value(0),
     };
     this.theme = Boolean(props.theme) ? props.theme : false;
   }
+
+  onDateChange = (date) => { this.setState({ date }); }
+
   openModal = () => {
     this.setState({ modalVisible: true });
     Animated.timing(
@@ -79,9 +83,14 @@ export default class DatePickerIos extends Component {
   closeModal = () => {
     this.setState({ modalVisible: false, animatedHeight: new Animated.Value(0) });
   }
-
-  cancel = () => { this.closeModal(); }
-  confirm = () => { this.closeModal(); }
+  cancel = () => {
+    this.closeModal();
+    this.setState({ date: this.props.date });
+  }
+  confirm = () => {
+    this.closeModal();
+    this.props.onDateChange(this.state.date);
+  }
 
   renderCancelButton = () => (
     <TouchableOpacity
@@ -123,6 +132,14 @@ export default class DatePickerIos extends Component {
       {this.renderConfirmButton()}
     </View>
   )
+  renderDatePicker = () => (
+    <DatePickerIOS
+      style={styles.datePicker}
+      mode={'date'}
+      date={this.state.date}
+      onDateChange={this.onDateChange}
+    />
+  );
   renderModal = () => (
     <Modal
       visible={this.state.modalVisible}
@@ -138,12 +155,7 @@ export default class DatePickerIos extends Component {
           ]}
         >
           {this.renderControlBar()}
-          <DatePickerIOS
-            style={styles.datePicker}
-            mode={'date'}
-            date={this.props.date}
-            onDateChange={this.props.onDateChange}
-          />
+          {this.renderDatePicker()}
         </Animated.View>
       </View>
     </Modal>

@@ -4,15 +4,16 @@ import React, {
 } from 'react';
 import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 
+import DatePicker from '../components/datePickers/DatePicker';
 import Label from './Label';
 import {
   View,
-  TouchableHighlight,
 } from 'react-native';
+import { datePickerPropTypes } from '../propTypes/dateField';
 import { formFieldStyles } from '../styles';
 
 const propTypes = {
-  ...formFieldPropTypes,
+  ...datePickerPropTypes,
 };
 
 const defaultProps = {};
@@ -22,7 +23,20 @@ const contextTypes = {
 };
 
 export default class DateField extends Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      date: new Date(),
+    };
+  }
+  handleValueChange = (value) => {
+    this.setState({ date: value },
+      this.handleStateChange
+    );
+  }
+  handleStateChange = () => {
+    this.context.handleValueChange(this.props.name, this.state.date);
+  }
   render() {
     return (
       <View
@@ -33,13 +47,12 @@ export default class DateField extends Component {
       >
         <Label title={this.props.title} labelContainerStyles={this.context.labelContainerStyles} />
         <View style={[formFieldStyles.inputContainer, this.context.inputContainerStyles]}>
-          <TouchableHighlight>
-
-          </TouchableHighlight>
-          <TextInput
-            style={[formFieldStyles.inputText]}
-            onChangeText={this.handleValueChange}
-            {...{ ...this.props, value: this.context.formData[this.props.name] }}
+          <DatePicker
+            date={this.state.date}
+            onDateChange={this.handleValueChange}
+            theme={this.context.theme}
+            cancelBtnText={this.props.cancelBtnText}
+            confirmBtnText={this.props.confirmBtnText}
           />
         </View>
       </View>
