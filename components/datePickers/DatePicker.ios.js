@@ -1,11 +1,13 @@
+import 'moment/locale/zh-tw';
+
 import {
+  Animated,
   DatePickerIOS,
   Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Animated,
 } from 'react-native';
 import React, {
   Component,
@@ -15,6 +17,7 @@ import { dateFieldStyles, formFieldStyles } from '../../styles';
 
 import { BASE_GRID_HEIGHT } from '../../constants/layout';
 import { datePickerPropTypes } from '../../propTypes/dateField';
+import moment from 'moment';
 
 const propTypes = {
   ...datePickerPropTypes,
@@ -51,7 +54,6 @@ const styles = StyleSheet.create({
   },
   controlButtonText: {
     color: 'blue',
-    fontWeight: 'bold',
   },
   datePicker: {
   },
@@ -117,7 +119,7 @@ export default class DatePickerIos extends Component {
       <Text
         style={[
           styles.controlButtonText,
-          { color: 'blue' },
+          { color: 'blue', fontWeight: 'bold' },
           this.theme && this.theme.activeColor && { color: this.theme.activeColor },
         ]}
       >
@@ -162,6 +164,8 @@ export default class DatePickerIos extends Component {
   )
 
   render() {
+    const momentDate = moment(this.props.date);
+    momentDate.locale('zh-tw');
     return (
       <View
         style={[dateFieldStyles.dateTextContainer]}
@@ -173,7 +177,7 @@ export default class DatePickerIos extends Component {
           <Text
             style={[formFieldStyles.inputText]}
           >
-            {this.props.date.toString()}
+            {momentDate.format('Y / M / D  (ddd)')}
           </Text>
         </TouchableOpacity>
         {this.renderModal()}
