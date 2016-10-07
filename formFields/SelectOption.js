@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import { formFieldStyles } from '../styles';
 import { optionContextTypes } from '../propTypes/selectField';
 
 const propTypes = {
@@ -75,6 +76,7 @@ export default class SelectOption extends Component {
       >
         <Text
           style={[
+            formFieldStyles.inputText,
             styles.text,
             selected && styles.selectedText,
             selected && Boolean(this.activeTextColor) && { color: this.activeTextColor },

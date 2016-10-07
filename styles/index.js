@@ -17,4 +17,7 @@ export const formFieldStyles = StyleSheet.create({
   inputContainer: {
     flex: 3,
   },
+  inputText: {
+    color: '#000',
+  },
 });
