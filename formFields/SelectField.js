@@ -49,7 +49,7 @@ export default class SelectField extends Component {
   constructor(props, context) {
     super(props);
     this.state = {
-      selectedOptions: context.formData[this.props.name] || {},
+      selectedOptions: context.formData[props.name] || {},
     };
     this.setRowCount();
     this.setFieldHeight(context);
