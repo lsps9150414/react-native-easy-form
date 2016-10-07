@@ -8,16 +8,24 @@ export const formFieldStyles = StyleSheet.create({
   },
   labelContainer: {
     flex: 1,
-    backgroundColor: '#ddd',
     justifyContent: 'center',
+    backgroundColor: '#ddd',
   },
   label: {
     textAlign: 'center',
+    color: '#000',
   },
   inputContainer: {
     flex: 3,
   },
   inputText: {
     color: '#000',
+  },
+});
+
+export const dateFieldStyles = StyleSheet.create({
+  dateTextContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });
