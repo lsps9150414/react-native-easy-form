@@ -66,8 +66,6 @@ export default class SelectOption extends Component {
     }
   }
   render() {
-    // const selected = Boolean(this.context.selectedOptions[this.props.value]);
-    // const disabled = this.context.selectedOptions[this.props.value] === false;
     return (
       <TouchableOpacity
         style={[

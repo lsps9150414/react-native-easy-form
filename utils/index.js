@@ -1,13 +1,13 @@
 import React from 'react';
 
-export const insertSeparator = (itemArray = [], SeperatorComponent) => {
-  const itemArrayWithSeperator = itemArray;
+export const insertSeparator = (itemArray = [], SeparatorComponent) => {
+  const itemArrayWithSeparator = itemArray;
   const length = itemArray.length;
   for (let i = 1; i < length; i++) {
-    itemArrayWithSeperator.splice(
+    itemArrayWithSeparator.splice(
       (i * 2 - 1), 0,
-      (<SeperatorComponent key={`seperator-${i}`} />)
+      (<SeparatorComponent key={`Separator-${i}`} />)
     );
   }
-  return itemArrayWithSeperator;
+  return itemArrayWithSeparator;
 };

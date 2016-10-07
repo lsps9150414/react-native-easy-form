@@ -7,7 +7,7 @@ import { formFieldContextTypes, formPropTypes } from './propTypes';
 import TextInputField from './formFields/TextInputField';
 import SelectField from './formFields/SelectField';
 import SelectOption from './formFields/SelectOption';
-import Seperator from './components/Separator';
+import Separator from './components/Separator';
 
 const propTypes = {
   ...formPropTypes,
@@ -21,7 +21,7 @@ export default class EasyForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formData: this.props.formData || {},
+      formData: props.formData || {},
     };
   }
   getChildContext = () => ({
@@ -32,6 +32,12 @@ export default class EasyForm extends React.Component {
     theme: this.props.theme,
     baseGridHeight: this.props.baseGridHeight,
   })
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.formData !== this.props.formData) {
+      this.setState({ formData: nextProps.formData });
+    }
+  }
 
   handleFormFieldValueChange = (fieldName, value) => {
     this.setState(
@@ -55,4 +61,4 @@ EasyForm.childContextTypes = childContextTypes;
 EasyForm.TextInputField = TextInputField;
 EasyForm.SelectField = SelectField;
 EasyForm.SelectOption = SelectOption;
-EasyForm.Seperator = Seperator;
+EasyForm.Separator = Separator;

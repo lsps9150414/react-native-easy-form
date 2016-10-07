@@ -11,7 +11,7 @@ import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 import { BASE_GRID_HEIGHT } from '../constants/layout';
 import Label from './Label';
 import Separator from '../components/Separator';
-import SeperatorVertical from '../components/SeperatorVertical';
+import SeparatorVertical from '../components/SeparatorVertical';
 import { formFieldStyles } from '../styles';
 import { insertSeparator } from '../utils';
 import { optionContextTypes } from '../propTypes/selectField';
@@ -46,37 +46,36 @@ const styles = StyleSheet.create({
 });
 
 export default class SelectField extends Component {
-  constructor(props) {
+  constructor(props, context) {
     super(props);
     this.state = {
-      selectedOptions: {},
+      selectedOptions: context.formData[this.props.name] || {},
     };
-    this.rowCount = props.grid ?
-      Math.ceil(React.Children.count(props.children) / props.numberOfItemsInOneRow)
-      : React.Children.count(props.children);
+    this.setRowCount();
+    this.setFieldHeight(context);
   }
   getChildContext = () => ({
     selectedOptions: this.state.selectedOptions,
     handleOnPress: this.handleOptionOnPress,
   })
+  componentWillReceiveProps(nextProps, nextContext) {
+    this.updateSelectedFromFormData(nextContext.formData[this.props.name]);
+  }
 
-  componentWillMount() {
-    this.setFieldHeight();
-    this.updateSelectedFromFormData();
+  setRowCount = () => {
+    this.rowCount = this.props.grid ?
+      (Math.ceil(React.Children.count(this.props.children) / this.props.numberOfItemsInOneRow))
+      : React.Children.count(this.props.children);
   }
-  // componentWillReceiveProps(nextProps, nextContext) {
-  //   if (nextContext.formData[this.props.name] !== this.context.formData[this.props.name]) {
-  //     // this.setState({ selectedOptions: nextContext.formData[this.props.name] });
-  //     console.log('context changed');
-  //   }
-  // }
-  setFieldHeight = () => {
-    this.fieldHeight = this.context.baseGridHeight ?
-      (this.context.baseGridHeight * this.rowCount) : (BASE_GRID_HEIGHT * this.rowCount);
+  setFieldHeight = (context) => {
+    this.fieldHeight = context.baseGridHeight ?
+      (context.baseGridHeight * this.rowCount) : (BASE_GRID_HEIGHT * this.rowCount);
   }
-  updateSelectedFromFormData = () => {
-    if (Boolean(this.context.formData[this.props.name])) {
-      this.setState({ selectedOptions: this.context.formData[this.props.name] });
+  updateSelectedFromFormData = (selectedOptions) => {
+    if (Boolean(selectedOptions)) {
+      this.setState({ selectedOptions });
+    } else {
+      this.setState({ selectedOptions: {} });
     }
   }
 
@@ -90,23 +89,30 @@ export default class SelectField extends Component {
         delete updatedSelectedOptions[value];
         this.setState(
           { selectedOptions: updatedSelectedOptions },
-          () => { this.handleValueChange(this.state.selectedOptions); }
+          this.handleStateChange
         );
       } else {
         this.setState(
           { selectedOptions: { ...this.state.selectedOptions, [value]: true } },
-          () => { this.handleValueChange(this.state.selectedOptions); }
+          this.handleStateChange
         );
       }
     } else {
+      const updatedSelectedOptions = this.state.selectedOptions;
+      const lastSelectedKeys =
+        Object.keys(updatedSelectedOptions).filter(key => updatedSelectedOptions[key]);
+      lastSelectedKeys.forEach(key => {
+        delete updatedSelectedOptions[key];
+      });
+      updatedSelectedOptions[value] = true;
       this.setState(
-        { selectedOptions: { [value]: true } },
-        () => { this.handleValueChange(value); }
+        { selectedOptions: updatedSelectedOptions },
+        this.handleStateChange
       );
     }
   }
-  handleValueChange = (value) => {
-    this.context.handleValueChange(this.props.name, value);
+  handleStateChange = () => {
+    this.context.handleValueChange(this.props.name, this.state.selectedOptions);
   }
 
   renderOptionRows = () => {
@@ -123,14 +129,14 @@ export default class SelectField extends Component {
     while (childrenArray.length > 0) {
       optionRows.push(childrenArray.splice(0, this.props.numberOfItemsInOneRow));
     }
-    const optionRowsWithSeperator = insertSeparator(optionRows, Separator);
+    const optionRowsWithSeparator = insertSeparator(optionRows, Separator);
 
-    return optionRowsWithSeperator.map((optionRow, index) => {
+    return optionRowsWithSeparator.map((optionRow, index) => {
       if (Array.isArray(optionRow)) {
-        const rowItemsWithSeperator = insertSeparator(optionRow, SeperatorVertical);
+        const rowItemsWithSeparator = insertSeparator(optionRow, SeparatorVertical);
         return (
           <View key={`optionRows-${index}`} style={styles.optionRowContainer}>
-          {rowItemsWithSeperator.map(item => item)}
+          {rowItemsWithSeparator.map(item => item)}
           </View>
         );
       }
