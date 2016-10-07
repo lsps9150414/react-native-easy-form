@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import {
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -32,6 +31,8 @@ export default class TextInputField extends React.Component {
     this.context.handleValueChange(this.props.name, value);
   }
   render() {
+    const value = Boolean(this.context.formData[this.props.name]) ?
+      this.context.formData[this.props.name] : this.props.value;
     return (
       <View
         style={[
@@ -42,9 +43,10 @@ export default class TextInputField extends React.Component {
         <Label title={this.props.title} labelContainerStyles={this.context.labelContainerStyles} />
         <View style={[formFieldStyles.inputContainer, this.context.inputContainerStyles]}>
           <TextInput
-            style={[styles.textInput]}
+            style={[formFieldStyles.inputText, styles.textInput]}
             onChangeText={this.handleValueChange}
-            {...{ ...this.props, value: this.context.formData[this.props.name] }}
+            {...this.props}
+            value={value}
           />
         </View>
       </View>
