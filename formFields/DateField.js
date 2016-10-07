@@ -23,12 +23,24 @@ const contextTypes = {
 };
 
 export default class DateField extends Component {
-  constructor(props) {
+  constructor(props, context) {
     super(props);
     this.state = {
-      date: new Date(),
+      date: context.formData[props.name] || new Date(),
     };
   }
+  componentWillReceiveProps(nextProps, nextContext) {
+    this.updateDateFromFormData(nextContext.formData[this.props.name]);
+  }
+
+  updateDateFromFormData = (date) => {
+    if (Boolean(date)) {
+      this.setState({ date });
+    } else {
+      this.setState({ date: new Date() });
+    }
+  }
+
   handleValueChange = (value) => {
     this.setState({ date: value },
       this.handleStateChange
