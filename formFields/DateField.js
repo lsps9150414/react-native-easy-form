@@ -2,7 +2,7 @@ import React, {
   Component,
   PropTypes,
 } from 'react';
-import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
+import { formFieldContextTypes } from '../propTypes';
 
 import DatePicker from '../components/datePickers/DatePicker';
 import Label from './Label';

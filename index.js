@@ -13,7 +13,9 @@ import {
 const propTypes = {
   ...formPropTypes,
 };
+
 const defaultProps = {};
+
 const childContextTypes = {
   ...formFieldContextTypes,
 };

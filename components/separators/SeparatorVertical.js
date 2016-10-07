@@ -6,6 +6,7 @@ import {
   View,
 } from 'react-native';
 
+import { formToFieldPropTypes } from '../../propTypes';
 import { separatorPropTypes } from '../../propTypes/components';
 
 const propTypes = {
@@ -13,6 +14,10 @@ const propTypes = {
 };
 
 const defaultProps = {};
+
+const contextTypes = {
+  ...formToFieldPropTypes,
+};
 
 const styles = StyleSheet.create({
   base: {
@@ -32,6 +37,8 @@ export default class Separator extends Component {
         style={[
           styles.base,
           styles.vertical,
+          Boolean(this.context.theme) && Boolean(this.context.theme.separatorColor)
+            && { borderColor: this.context.theme.separatorColor },
           Boolean(this.props.style) && this.props.style,
         ]}
       />
@@ -42,3 +49,4 @@ export default class Separator extends Component {
 
 Separator.propTypes = propTypes;
 Separator.defaultProps = defaultProps;
+Separator.contextTypes = contextTypes;
