@@ -21,6 +21,7 @@ const propTypes = {
   numberOfItemsInOneRow: PropTypes.number,
   multipleSelections: PropTypes.bool,
   grid: PropTypes.bool,
+  separatorStyle: View.propTypes.style,
 };
 const defaultProps = {
   multipleSelections: false,
@@ -132,11 +133,11 @@ export default class SelectField extends Component {
     while (childrenArray.length > 0) {
       optionRows.push(childrenArray.splice(0, this.props.numberOfItemsInOneRow));
     }
-    const optionRowsWithSeparator = insertSeparator(optionRows, Separator);
+    const optionRowsWithSeparator = insertSeparator(optionRows, Separator, { style: this.props.separatorStyle });
 
     return optionRowsWithSeparator.map((optionRow, index) => {
       if (Array.isArray(optionRow)) {
-        const rowItemsWithSeparator = insertSeparator(optionRow, SeparatorVertical);
+        const rowItemsWithSeparator = insertSeparator(optionRow, SeparatorVertical, { style: this.props.separatorStyle });
         return (
           <View key={`optionRows-${index}`} style={styles.optionRowContainer}>
           {rowItemsWithSeparator.map(item => item)}
@@ -148,7 +149,7 @@ export default class SelectField extends Component {
   }
   renderOptionList = () => {
     const childrenArray = React.Children.toArray(this.props.children);
-    return insertSeparator(childrenArray, Separator);
+    return insertSeparator(childrenArray, Separator, { style: this.props.separatorStyle });
   }
 
   render() {

@@ -1,31 +1,40 @@
 import React, {
   Component,
 } from 'react';
-
 import {
-  View,
   StyleSheet,
+  View,
 } from 'react-native';
 
-const propTypes = {};
+import { separatorPropTypes } from '../../propTypes/components';
+
+const propTypes = {
+  ...separatorPropTypes,
+};
 
 const defaultProps = {};
 
 const styles = StyleSheet.create({
   base: {
-    borderWidth: 0,
-    backgroundColor: 'yellow',
     height: 0,
+    borderWidth: 0,
   },
   horizontal: {
     borderTopWidth: StyleSheet.hairlineWidth,
+    borderColor: '#ccc',
   },
 });
 
 export default class Separator extends Component {
   render() {
     return (
-      <View style={[styles.base, styles.horizontal]} />
+      <View
+        style={[
+          styles.base,
+          styles.horizontal,
+          Boolean(this.props.style) && this.props.style,
+        ]}
+      />
     );
   }
 

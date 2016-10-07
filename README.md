@@ -18,4 +18,4 @@ An easy to use modularized and customizable React Native form component.
 - [ ] Customizable `<SelectOption />` container style
 - [ ] Customizable option text style
 - [ ] Customizable label text style
-- [ ] Customizable `<Separator>` style
+- [x] Customizable `<Separator>` style
