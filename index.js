@@ -1,13 +1,14 @@
+import { formFieldContextTypes, formPropTypes } from './propTypes';
+
+import DateField from './formFields/DateField';
 import React from 'react';
+import SelectField from './formFields/SelectField';
+import SelectOption from './formFields/SelectOption';
+import Separator from './components/separators/Separator';
+import TextInputField from './formFields/TextInputField';
 import {
   View,
 } from 'react-native';
-import { formFieldContextTypes, formPropTypes } from './propTypes';
-
-import TextInputField from './formFields/TextInputField';
-import SelectField from './formFields/SelectField';
-import SelectOption from './formFields/SelectOption';
-import Separator from './components/Separator';
 
 const propTypes = {
   ...formPropTypes,
@@ -59,6 +60,7 @@ EasyForm.defaultProps = defaultProps;
 EasyForm.childContextTypes = childContextTypes;
 
 EasyForm.TextInputField = TextInputField;
+EasyForm.DateField = DateField;
 EasyForm.SelectField = SelectField;
 EasyForm.SelectOption = SelectOption;
 EasyForm.Separator = Separator;
