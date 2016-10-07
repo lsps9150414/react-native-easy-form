@@ -12,8 +12,10 @@ An easy to use modularized and customizable React Native form component.
 - [ ] `<DateField>`
 - [ ] `<TimeRangeField>` for date/time
 - [ ] `<NumberRangeField>` for integer/floating point
+- [ ] Support time/dateTime picking mode (`<DateField>` => `<DateTimeField>`)
 
 ### Styles
 - [ ] Customizable `<SelectOption />` container style
 - [ ] Customizable option text style
 - [ ] Customizable label text style
+- [ ] Customizable `<Separator>` style
