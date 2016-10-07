@@ -6,6 +6,7 @@ export const formToFieldPropTypes = {
   theme: PropTypes.shape({
     activeColor: PropTypes.string,
     disabledColor: PropTypes.string,
+    dangerColor: PropTypes.string,
     textColor: PropTypes.string,
     activeTextColor: PropTypes.string,
     disabledTextColor: PropTypes.string,
