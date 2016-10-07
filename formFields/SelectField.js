@@ -10,8 +10,8 @@ import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 
 import { BASE_GRID_HEIGHT } from '../constants/layout';
 import Label from './Label';
-import Separator from '../components/Separator';
-import SeparatorVertical from '../components/SeparatorVertical';
+import Separator from '../components/separators/Separator';
+import SeparatorVertical from '../components/separators/SeparatorVertical';
 import { formFieldStyles } from '../styles';
 import { insertSeparator } from '../utils';
 import { optionContextTypes } from '../propTypes/selectField';
@@ -112,6 +112,9 @@ export default class SelectField extends Component {
     }
   }
   handleStateChange = () => {
+    if (this.props.onValueChange) {
+      this.props.onValueChange(this.state.selectedOptions);
+    }
     this.context.handleValueChange(this.props.name, this.state.selectedOptions);
   }
 

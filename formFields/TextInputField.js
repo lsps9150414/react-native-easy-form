@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -7,6 +6,7 @@ import {
 import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 
 import Label from './Label';
+import React from 'react';
 import { formFieldStyles } from '../styles';
 
 const propTypes = {
@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
 
 export default class TextInputField extends React.Component {
   handleValueChange = (value) => {
+    if (this.props.onValueChange) {
+      this.props.onValueChange(value);
+    }
     this.context.handleValueChange(this.props.name, value);
   }
   render() {
