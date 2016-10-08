@@ -19,4 +19,4 @@ An easy to use modularized and customizable React Native form component.
 - [ ] Customizable option text style
 - [ ] Customizable label text style
 - [x] Customizable `<Separator>` style
-- [ ] Set `<Separator>` color with theme form prop
+- [x] Set `<Separator>` color with theme form prop
