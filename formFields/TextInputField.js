@@ -43,6 +43,7 @@ export default class TextInputField extends React.Component {
         <View style={[formFieldStyles.inputContainer, this.context.inputContainerStyles]}>
           <TextInput
             style={[formFieldStyles.inputText, styles.textInput]}
+            underlineColorAndroid={'transparent'}
             onChangeText={this.handleValueChange}
             {...this.props}
             value={this.context.formData[this.props.name]}
