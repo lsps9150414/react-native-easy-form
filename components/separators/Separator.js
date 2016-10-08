@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
 
 export default class Separator extends Component {
   render() {
-    console.log(this.context.theme);
     return (
       <View
         style={[
