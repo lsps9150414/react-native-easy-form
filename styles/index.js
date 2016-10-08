@@ -2,7 +2,7 @@ import { BASE_GRID_HEIGHT } from '../constants/layout';
 import { StyleSheet } from 'react-native';
 
 export const formFieldStyles = StyleSheet.create({
-  fieldGroup: {
+  fieldContainer: {
     flexDirection: 'row',
     height: BASE_GRID_HEIGHT,
   },
@@ -11,12 +11,14 @@ export const formFieldStyles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#ddd',
   },
+  inputContainer: {
+    flex: 3,
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
   label: {
     textAlign: 'center',
     color: '#000',
-  },
-  inputContainer: {
-    flex: 3,
   },
   inputText: {
     textAlign: 'center',

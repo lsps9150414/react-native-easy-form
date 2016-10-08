@@ -35,12 +35,12 @@ export default class TextInputField extends React.Component {
     return (
       <View
         style={[
-          formFieldStyles.fieldGroup,
+          formFieldStyles.fieldContainer,
           Boolean(this.context.baseGridHeight) && { height: this.context.baseGridHeight },
         ]}
       >
-        <Label title={this.props.title} labelContainerStyles={this.context.labelContainerStyles} />
-        <View style={[formFieldStyles.inputContainer, this.context.inputContainerStyles]}>
+        <Label title={this.props.title} labelContainerStyle={this.context.labelContainerStyle} />
+        <View style={[formFieldStyles.inputContainer, this.context.inputContainerStyle]}>
           <TextInput
             style={[formFieldStyles.inputText, styles.textInput]}
             underlineColorAndroid={'transparent'}

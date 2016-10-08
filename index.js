@@ -30,8 +30,8 @@ export default class EasyForm extends React.Component {
   getChildContext = () => ({
     formData: this.state.formData,
     handleValueChange: this.handleFormFieldValueChange,
-    labelContainerStyles: this.props.labelContainerStyles,
-    inputContainerStyles: this.props.inputContainerStyles,
+    labelContainerStyle: this.props.labelContainerStyle,
+    inputContainerStyle: this.props.inputContainerStyle,
     theme: this.props.theme,
     baseGridHeight: this.props.baseGridHeight,
   })

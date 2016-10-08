@@ -165,16 +165,16 @@ export default class SelectField extends Component {
     return (
       <View
         style={[
-          formFieldStyles.fieldGroup,
+          formFieldStyles.fieldContainer,
           { height: this.fieldHeight },
         ]}
       >
-        <Label title={this.props.title} labelContainerStyles={this.context.labelContainerStyles} />
+        <Label title={this.props.title} labelContainerStyle={this.context.labelContainerStyle} />
         <View
           style={[
             formFieldStyles.inputContainer,
             styles.inputContainer,
-            this.context.inputContainerStyles,
+            this.context.inputContainerStyle,
           ]}
         >
           {!this.props.grid && this.renderOptionList()}

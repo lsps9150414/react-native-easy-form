@@ -53,12 +53,12 @@ export default class DateField extends Component {
     return (
       <View
         style={[
-          formFieldStyles.fieldGroup,
+          formFieldStyles.fieldContainer,
           Boolean(this.context.baseGridHeight) && { height: this.context.baseGridHeight },
         ]}
       >
-        <Label title={this.props.title} labelContainerStyles={this.context.labelContainerStyles} />
-        <View style={[formFieldStyles.inputContainer, this.context.inputContainerStyles]}>
+        <Label title={this.props.title} labelContainerStyle={this.context.labelContainerStyle} />
+        <View style={[formFieldStyles.inputContainer, this.context.inputContainerStyle]}>
           <DatePicker
             date={this.state.date}
             onDateChange={this.handleValueChange}

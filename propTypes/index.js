@@ -13,8 +13,8 @@ export const formToFieldPropTypes = {
     separatorColor: PropTypes.string,
   }),
   baseGridHeight: PropTypes.number,
-  labelContainerStyles: View.propTypes.style,
-  inputContainerStyles: View.propTypes.style,
+  labelContainerStyle: View.propTypes.style,
+  inputContainerStyle: View.propTypes.style,
 };
 
 export const formPropTypes = {
