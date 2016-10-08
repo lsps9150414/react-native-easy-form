@@ -18,5 +18,6 @@ An easy to use modularized and customizable React Native form component.
 - [ ] Customizable `<SelectOption />` container style
 - [ ] Customizable option text style
 - [ ] Customizable label text style
+- [ ] Customizable android date picker color
 - [x] Customizable `<Separator>` style
 - [x] Set `<Separator>` color with theme form prop
