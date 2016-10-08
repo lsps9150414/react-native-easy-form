@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class DatePickerIos extends Component {
+export default class IosDatePicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -189,5 +189,5 @@ export default class DatePickerIos extends Component {
 
 }
 
-DatePickerIos.propTypes = propTypes;
-DatePickerIos.defaultProps = defaultProps;
+IosDatePicker.propTypes = propTypes;
+IosDatePicker.defaultProps = defaultProps;
