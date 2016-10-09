@@ -6,26 +6,24 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
+import { insertArray, splitArray } from '../utils';
+import { optionContextTypes, selectPropTypes } from '../propTypes/selectField';
 
 import { BASE_GRID_HEIGHT } from '../constants/layout';
 import Label from './Label';
+import SelectOption from './SelectOption';
 import Separator from '../components/separators/Separator';
 import SeparatorVertical from '../components/separators/SeparatorVertical';
+import { formFieldContextTypes } from '../propTypes';
 import { formFieldStyles } from '../styles';
-import { insertSeparator } from '../utils';
-import { optionContextTypes } from '../propTypes/selectField';
 
 const propTypes = {
-  ...formFieldPropTypes,
-  numberOfItemsInOneRow: PropTypes.number,
-  multipleSelections: PropTypes.bool,
-  grid: PropTypes.bool,
-  separatorStyle: View.propTypes.style,
+  ...selectPropTypes,
 };
 const defaultProps = {
   multipleSelections: false,
   grid: false,
+  numberOfItemsInOneRow: 5,
 };
 const contextTypes = {
   ...formFieldContextTypes,
@@ -56,7 +54,6 @@ export default class SelectField extends Component {
     this.setFieldHeight(context);
   }
   getChildContext = () => ({
-    selectedOptions: this.state.selectedOptions,
     handleOnPress: this.handleOptionOnPress,
   })
   componentWillReceiveProps(nextProps, nextContext) {
@@ -72,13 +69,15 @@ export default class SelectField extends Component {
     this.fieldHeight = context.baseGridHeight ?
       (context.baseGridHeight * this.rowCount) : (BASE_GRID_HEIGHT * this.rowCount);
   }
-  getPropsForSeparator = () => {
+
+  getOptionProps = () => (
+    React.Children.map(this.props.children, child => child.props)
+  )
+  getSeparatorStyle = () => {
     if (Boolean(this.context.theme) && Boolean(this.context.theme.separatorColor)) {
-      return ({
-        style: { borderColor: this.context.theme.separatorColor, ...this.props.separatorStyle },
-      });
+      return ({ borderColor: this.context.theme.separatorColor, ...this.props.separatorStyle });
     }
-    return ({ style: this.props.separatorStyle });
+    return (this.props.separatorStyle);
   }
 
   updateSelectedFromFormData = (selectedOptions) => {
@@ -129,36 +128,71 @@ export default class SelectField extends Component {
   }
 
   renderOptionRows = () => {
-    if (!Boolean(this.props.numberOfItemsInOneRow)) {
-      return (
-        <View style={styles.optionRowContainer}>
-          {React.Children.map(this.props.children, child => child)}
-        </View>
-      );
-    }
-    // Slice options into rows.
-    const optionRows = [];
-    const childrenArray = React.Children.toArray(this.props.children);
-    while (childrenArray.length > 0) {
-      optionRows.push(childrenArray.splice(0, this.props.numberOfItemsInOneRow));
-    }
-    const optionRowsWithSeparator = insertSeparator(optionRows, Separator, this.getPropsForSeparator());
-
-    return optionRowsWithSeparator.map((optionRow, index) => {
-      if (Array.isArray(optionRow)) {
-        const rowItemsWithSeparator = insertSeparator(optionRow, SeparatorVertical, this.getPropsForSeparator());
+    const optionProps = this.getOptionProps();
+    const rowOptionProps = splitArray(optionProps, this.props.numberOfItemsInOneRow);
+    const rowsWithSeparator = insertArray(rowOptionProps, 'separator', 1);
+    return rowsWithSeparator.map((row, rowIndex) => {
+      // Row of Separator
+      if (row === 'separator') {
         return (
-          <View key={`optionRows-${index}`} style={styles.optionRowContainer}>
-          {rowItemsWithSeparator.map(item => item)}
-          </View>
+          <Separator
+            key={`${this.props.name}GridSeparators-${rowIndex}`}
+            style={this.getSeparatorStyle()}
+          />
         );
       }
-      return optionRow;
+      // Row of options
+      const rowItemsWithSeparator = insertArray(row, 'separator', 1);
+      const rowItemsToRender = rowItemsWithSeparator.map((item, itemIndex) => {
+        if (item === 'separator') {
+          return (
+            <SeparatorVertical
+              key={`${this.props.name}GridSeparators-${itemIndex}`}
+              style={this.getSeparatorStyle()}
+            />
+          );
+        }
+        return (
+          <SelectOption
+            key={`${this.props.name}Options-${itemIndex}`}
+            text={item.text}
+            value={item.value}
+            selected={Boolean(this.state.selectedOptions[item.value])}
+            disabled={this.state.selectedOptions[item.value] === false}
+          />
+        );
+      });
+      return (
+        <View key={`${this.props.name}GridRows-${rowIndex}`} style={styles.optionRowContainer}>
+          {rowItemsToRender}
+        </View>
+      );
     });
   }
   renderOptionList = () => {
-    const childrenArray = React.Children.toArray(this.props.children);
-    return insertSeparator(childrenArray, Separator, this.getPropsForSeparator());
+    const optionProps = this.getOptionProps();
+    const itemsToRender = insertArray(optionProps, 'separator', 1);
+    return (
+      itemsToRender.map((item, index) => {
+        if (item === 'separator') {
+          return (
+            <Separator
+              key={`${this.props.name}ListSeparators-${index}`}
+              style={this.getSeparatorStyle()}
+            />
+          );
+        }
+        return (
+          <SelectOption
+            key={`${this.props.name}Options-${index}`}
+            text={item.text}
+            value={item.value}
+            selected={Boolean(this.state.selectedOptions[item.value])}
+            disabled={this.state.selectedOptions[item.value] === false}
+          />
+        );
+      })
+    );
   }
 
   render() {

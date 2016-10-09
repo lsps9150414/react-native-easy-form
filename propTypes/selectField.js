@@ -1,9 +1,17 @@
 import { PropTypes } from 'react';
+import { View } from 'react-native';
 
-import { formToFieldPropTypes } from './index';
+import { formFieldPropTypes, formToFieldPropTypes } from './index';
+
+export const selectPropTypes = {
+  ...formFieldPropTypes,
+  multipleSelections: PropTypes.bool,
+  grid: PropTypes.bool,
+  numberOfItemsInOneRow: PropTypes.number,
+  separatorStyle: View.propTypes.style,
+};
 
 export const optionContextTypes = {
   ...formToFieldPropTypes,
-  selectedOptions: PropTypes.object.isRequired,
   handleOnPress: PropTypes.func.isRequired,
 };

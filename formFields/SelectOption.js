@@ -12,11 +12,13 @@ import { formFieldStyles } from '../styles';
 import { optionContextTypes } from '../propTypes/selectField';
 
 const propTypes = {
+  text: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
   ]).isRequired,
-  title: PropTypes.string.isRequired,
+  selected: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 const defaultProps = {
 };
@@ -55,41 +57,40 @@ export default class SelectOption extends Component {
       this.disabledTextColor = this.context.theme.disabledTextColor;
     }
   }
-  componentWillReceiveProps(nextProps, nextContext) {
-    this.selected = Boolean(nextContext.selectedOptions[this.props.value]);
-    this.disabled = nextContext.selectedOptions[this.props.value] === false;
-  }
 
   handleOnPress = () => {
-    if (!this.disabled) {
+    if (!this.props.disabled) {
       this.context.handleOnPress(String(this.props.value));
     }
   }
+
   render() {
+    const selected = this.props.selected;
+    const disabled = this.props.disabled;
     return (
       <TouchableOpacity
         style={[
           styles.container,
-          this.selected && styles.selected,
-          this.selected && Boolean(this.activeColor) && { backgroundColor: this.activeColor },
-          this.disabled && styles.disabled,
-          this.disabled && Boolean(this.disabledColor)
+          selected && styles.selected,
+          selected && Boolean(this.activeColor) && { backgroundColor: this.activeColor },
+          disabled && styles.disabled,
+          disabled && Boolean(this.disabledColor)
             && { backgroundColor: this.disabledColor },
         ]}
         onPress={this.handleOnPress}
-        disabled={this.disabled}
+        disabled={disabled}
       >
         <Text
           style={[
             formFieldStyles.inputText,
             styles.text,
-            this.selected && styles.selectedText,
-            this.selected && Boolean(this.activeTextColor) && { color: this.activeTextColor },
-            this.disabled && styles.disabledText,
-            this.disabled && Boolean(this.disabledTextColor)
+            selected && styles.selectedText,
+            selected && Boolean(this.activeTextColor) && { color: this.activeTextColor },
+            disabled && styles.disabledText,
+            disabled && Boolean(this.disabledTextColor)
               && { color: this.disabledTextColor },
           ]}
-        >{this.props.title}</Text>
+        >{this.props.text}</Text>
       </TouchableOpacity>
     );
   }
