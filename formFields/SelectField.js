@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import { insertArray, splitArray } from '../utils';
-import { optionContextTypes, selectPropTypes } from '../propTypes/selectField';
+import { optionContextTypes, selectPropTypes, selectDefaultProps } from '../propTypes/selectField';
 
 import { BASE_GRID_HEIGHT } from '../constants/layout';
 import Label from './Label';
@@ -20,9 +20,7 @@ const propTypes = {
   ...selectPropTypes,
 };
 const defaultProps = {
-  multipleSelections: false,
-  grid: false,
-  numberOfItemsInOneRow: 5,
+  ...selectDefaultProps,
 };
 const contextTypes = {
   ...formFieldContextTypes,
@@ -49,24 +47,25 @@ export default class SelectField extends Component {
     this.state = {
       selectedOptions: context.formData[props.name] || {},
     };
-    this.setRowCount();
-    this.setFieldHeight(context);
   }
   getChildContext = () => ({
     handleOnPress: this.handleOptionOnPress,
   })
+  componentWillMount() {
+    this.setFieldHeight();
+  }
   componentWillReceiveProps(nextProps, nextContext) {
     this.updateSelectedFromFormData(nextContext.formData[this.props.name]);
   }
 
-  setRowCount = () => {
-    this.rowCount = this.props.grid ?
+  getRowCount = () => (
+    this.props.grid ?
       (Math.ceil(React.Children.count(this.props.children) / this.props.numberOfItemsInOneRow))
-      : React.Children.count(this.props.children);
-  }
-  setFieldHeight = (context) => {
-    this.fieldHeight = context.baseGridHeight ?
-      (context.baseGridHeight * this.rowCount) : (BASE_GRID_HEIGHT * this.rowCount);
+      : React.Children.count(this.props.children)
+  )
+  setFieldHeight = () => {
+    this.fieldHeight = this.context.baseGridHeight ?
+      (this.context.baseGridHeight * this.getRowCount()) : (BASE_GRID_HEIGHT * this.getRowCount());
   }
 
   getOptionProps = () => (

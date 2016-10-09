@@ -11,6 +11,12 @@ export const selectPropTypes = {
   separatorStyle: View.propTypes.style,
 };
 
+export const selectDefaultProps = {
+  multipleSelections: false,
+  grid: false,
+  numberOfItemsInOneRow: 5,
+};
+
 export const optionContextTypes = {
   ...formToFieldPropTypes,
   handleOnPress: PropTypes.func.isRequired,
