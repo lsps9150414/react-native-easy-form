@@ -2,7 +2,7 @@ import React, {
   Component,
   PropTypes,
 } from 'react';
-import { formFieldContextTypes } from '../propTypes';
+import { formFieldPropTypes, formFieldContextTypes } from '../propTypes';
 
 import DatePicker from '../components/datePickers/DatePicker';
 import Label from './Label';
@@ -13,6 +13,7 @@ import { datePickerPropTypes } from '../propTypes/dateField';
 import { formFieldStyles } from '../styles';
 
 const propTypes = {
+  ...formFieldPropTypes,
   ...datePickerPropTypes,
 };
 
