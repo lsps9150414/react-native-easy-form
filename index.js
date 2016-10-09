@@ -6,6 +6,7 @@ import SelectField from './formFields/SelectField';
 import SelectOption from './formFields/SelectOption';
 import Separator from './components/separators/Separator';
 import TextInputField from './formFields/TextInputField';
+import TimeRangeField from './formFields/TimeRangeField';
 import {
   View,
 } from 'react-native';
@@ -63,6 +64,7 @@ EasyForm.childContextTypes = childContextTypes;
 
 EasyForm.TextInputField = TextInputField;
 EasyForm.DateField = DateField;
+EasyForm.TimeRangeField = TimeRangeField;
 EasyForm.SelectField = SelectField;
 EasyForm.SelectOption = SelectOption;
 EasyForm.Separator = Separator;

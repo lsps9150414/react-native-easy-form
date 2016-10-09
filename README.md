@@ -10,7 +10,8 @@ An easy to use modularized and customizable React Native form component.
 - [x] Grid/List view for `<SelectField />`
 - [ ] Display `<SelectField />` as native `Picker` (wrap with modal for ios)
 - [x] `<DateField>`
-- [ ] `<TimeRangeField>` for date/time
+- [ ] `<TimeRangeField>`
+- [ ] `<DateRangeField>`
 - [ ] `<NumberRangeField>` for integer/floating point
 - [ ] Support custom `<SelectOption />` component (pass props from `<SelectField>` via context)
 - [ ] Support time/dateTime picking mode (`<DateField>` => `<DateTimeField>`)
