@@ -18,7 +18,7 @@ import moment from 'moment';
 
 const propTypes = {
   ...selectPropTypes,
-  minuteInterval: PropTypes.oneOf([1, 5, 10, 15, 20, 30, 60]),
+  minuteInterval: PropTypes.number,
   optionStartTime: PropTypes.instanceOf(Date),
   optionEndTime: PropTypes.instanceOf(Date),
 };
@@ -59,12 +59,8 @@ export default class TimeRangeField extends Component {
   })
 
   getDisabledTimesfromFormData = (context) => {
-    if (!context.formData[this.props.name]) {
-      return null;
-    }
-    if (!context.formData[this.props.name].disabledTimes) {
-      return null;
-    }
+    if (!context.formData[this.props.name]) { return null; }
+    if (!context.formData[this.props.name].disabledTimes) { return null; }
     return context.formData[this.props.name].disabledTimes.map(item => item.toString());
   }
   validateOptionTimes = () => {
@@ -103,29 +99,35 @@ export default class TimeRangeField extends Component {
       // - single time selected => current NOT disabled ?
       const selectedMoment = moment(new Date(this.state.selectedTimes[0]));
       const newSelectMoment = moment(new Date(value));
-      this.state.disabledTimes.forEach((disabledTime) => {
+      let crossed = false;
+      const updatedSelectedOptions = [];
+      this.state.disabledTimes.some((disabledTime) => {
         if (
           moment(new Date(disabledTime)).isBetween(selectedMoment, newSelectMoment, null, '[]') ||
           moment(new Date(disabledTime)).isBetween(newSelectMoment, selectedMoment, null, '[]')
         ) {
-          // - time range crossing disabled option ? => select current & unselect selected
-          this.setState({ selectedTimes: [value] });
-        } else {
-          // - time range NOT crossing disabled option ? => select
-          const updatedSelectedOptions = [];
-          const beforMoment = selectedMoment.isBefore(newSelectMoment) ?
-            moment(selectedMoment) : moment(newSelectMoment);
-          const afterMoment = selectedMoment.isAfter(newSelectMoment) ?
-            moment(selectedMoment) : moment(newSelectMoment);
-
-          for (
-            let i = moment(beforMoment);
-            i.isSameOrBefore(afterMoment);
-            i.add(this.props.minuteInterval, 'm')
-          ) { updatedSelectedOptions.push(i.toDate().toString()); }
-          this.setState({ selectedTimes: updatedSelectedOptions });
+        // - time range crossing disabled option ? => select current & unselect selected
+          crossed = true;
+          return true;
         }
+        // - time range NOT crossing disabled option ? => select
+        const beforMoment = selectedMoment.isBefore(newSelectMoment) ?
+          moment(selectedMoment) : moment(newSelectMoment);
+        const afterMoment = selectedMoment.isAfter(newSelectMoment) ?
+          moment(selectedMoment) : moment(newSelectMoment);
+
+        for (
+          let i = moment(beforMoment);
+          i.isSameOrBefore(afterMoment);
+          i.add(this.props.minuteInterval, 'm')
+        ) { updatedSelectedOptions.push(i.toDate().toString()); }
+        return false;
       });
+      if (crossed) {
+        this.setState({ selectedTimes: [value] });
+      } else {
+        this.setState({ selectedTimes: updatedSelectedOptions }, this.handleStateChange);
+      }
     } else {
       // - time range selected => current NOT disabled ?
       // - current near selected ends ? (inner & outer) => select current & unselect near end
@@ -139,23 +141,34 @@ export default class TimeRangeField extends Component {
       if (moment(new Date(value)).isSame(beforeSelectedStartTime)) {
         const updatedSelectedOptions = this.state.selectedTimes;
         updatedSelectedOptions.unshift(value);
-        this.setState({ selectedTimes: updatedSelectedOptions });
+        this.setState({ selectedTimes: updatedSelectedOptions }, this.handleStateChange);
       } else if (moment(new Date(value)).isSame(afterSelectedEndTime)) {
         const updatedSelectedOptions = this.state.selectedTimes;
         updatedSelectedOptions.push(value);
-        this.setState({ selectedTimes: updatedSelectedOptions });
+        this.setState({ selectedTimes: updatedSelectedOptions }, this.handleStateChange);
       } else {
         // - current NOT near selected ends ? (inner & outer) => select current & unselect ends
         this.setState({ selectedTimes: [value] });
       }
     }
   }
+  handleStateChange = () => {
+    if (this.props.onValueChange) {
+      this.props.onValueChange(this.state.selectedOptions);
+    }
+    this.context.handleValueChange(this.props.name, {
+      selectedStartTime: this.state.selectedTimes[0],
+      selectedEndTime: this.state.selectedTimes[this.state.selectedTimes.length - 1],
+      disabledTimes: this.state.disabledTimes,
+    });
+  }
 
   renderTimeOptionRows = () => {
     const timeOptionComponents = this.state.timeOptions.map((timeOption, index) => {
       const momentHour = moment(new Date(timeOption));
       momentHour.locale('en');
-      const text = momentHour.format('hA').toString();
+      const text = this.props.minuteInterval === 60 ?
+        momentHour.format('hA').toString() : momentHour.format('h:mm A').toString();
       const selected = this.state.selectedTimes.includes(timeOption);
       const disabled = this.state.disabledTimes.includes(timeOption);
       return (
