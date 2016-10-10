@@ -68,13 +68,13 @@ export default class TimeRangeField extends Component {
       return (
         this.props.grid ?
           (Math.ceil(this.state.timeOptions.length / this.props.numberOfItemsInOneRow))
-          : React.Children.count(this.props.children)
+          : this.state.timeOptions.length
       );
     }
     return (
       this.props.grid ?
       (Math.ceil(this.initTimeOptions.length / this.props.numberOfItemsInOneRow))
-      : React.Children.count(this.props.children)
+      : this.initTimeOptions.length
     );
   }
   getFieldHeight = (baseGridHeight) => {
@@ -220,14 +220,14 @@ export default class TimeRangeField extends Component {
         }
         const momentHour = moment(new Date(item));
         momentHour.locale('en');
-        const text = this.props.minuteInterval === 60 ?
+        const formatedTime = this.props.minuteInterval === 60 ?
           momentHour.format('hA').toString() : momentHour.format('h:mm A').toString();
         const selected = this.state.selectedTimes.includes(item);
         const disabled = this.state.disabledTimes.includes(item);
         return (
           <SelectOption
             key={`timeOptions-${itemIndex}`}
-            text={text}
+            text={formatedTime}
             value={item}
             selected={selected}
             disabled={disabled}
@@ -243,7 +243,35 @@ export default class TimeRangeField extends Component {
     });
   }
   renderTimeOptionList = () => {
-
+    const itemsToRender = insertArray(this.state.timeOptions, 'separator', 1);
+    return (
+      itemsToRender.map((item, index) => {
+        if (item === 'separator') {
+          return (
+            <Separator
+              key={`${this.props.name}ListSeparators-${index}`}
+              style={this.getSeparatorStyle()}
+            />
+          );
+        }
+        const momentHour = moment(new Date(item));
+        momentHour.locale('en');
+        const formatedTime = this.props.minuteInterval === 60 ?
+          momentHour.format('hA').toString() : momentHour.format('h:mm A').toString();
+        const selected = this.state.selectedTimes.includes(item);
+        const disabled = this.state.disabledTimes.includes(item);
+        return (
+          <SelectOption
+            key={`timeOptions-${index}`}
+            text={formatedTime}
+            value={item}
+            selected={selected}
+            disabled={disabled}
+            textStyle={this.props.optionTextStyle}
+          />
+        );
+      })
+    );
   }
 
   render() {
