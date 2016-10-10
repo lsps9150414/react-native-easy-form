@@ -4,14 +4,16 @@ import React, {
 } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 import { insertArray, splitArray } from '../utils';
-import { optionContextTypes, selectPropTypes } from '../propTypes/selectField';
+import { optionContextTypes, selectDefaultProps, selectPropTypes } from '../propTypes/selectField';
 
+import { BASE_GRID_HEIGHT } from '../constants/layout';
 import Label from './Label';
 import SelectOption from './SelectOption';
+import Separator from '../components/separators/Separator';
+import SeparatorVertical from '../components/separators/SeparatorVertical';
 import { formFieldContextTypes } from '../propTypes';
 import { formFieldStyles } from '../styles';
 import moment from 'moment';
@@ -24,8 +26,9 @@ const propTypes = {
 };
 
 const defaultProps = {
-  minuteInterval: 60,
+  ...selectDefaultProps,
   grid: true,
+  minuteInterval: 60,
 };
 
 const contextTypes = {
@@ -57,6 +60,25 @@ export default class TimeRangeField extends Component {
   getChildContext = () => ({
     handleOnPress: this.handleOptionOnPress,
   })
+  componentWillMount() {
+    this.setFieldHeight();
+  }
+
+  getRowCount = () => (
+    this.props.grid ?
+      (Math.ceil(this.state.timeOptions.length / this.props.numberOfItemsInOneRow))
+      : React.Children.count(this.props.children)
+  )
+  setFieldHeight = () => {
+    this.fieldHeight = this.context.baseGridHeight ?
+      (this.context.baseGridHeight * this.getRowCount()) : (BASE_GRID_HEIGHT * this.getRowCount());
+  }
+  getSeparatorStyle = () => {
+    if (Boolean(this.context.theme) && Boolean(this.context.theme.separatorColor)) {
+      return ({ borderColor: this.context.theme.separatorColor, ...this.props.separatorStyle });
+    }
+    return (this.props.separatorStyle);
+  }
 
   getDisabledTimesfromFormData = (context) => {
     if (!context.formData[this.props.name]) { return null; }
@@ -84,17 +106,14 @@ export default class TimeRangeField extends Component {
     timeOptions.push(this.props.optionEndTime.toString());
     return timeOptions;
   }
-  // TODO:
-  // context.minuteInterval
-  // context.selectedStartTime
-  // context.selectedEndTime
+
   handleOptionOnPress = (value) => {
     this.toggleSelected(value);
   }
   toggleSelected = (value) => {
     if (this.state.selectedTimes.length === 0) {
       // - nothing selected => current NOT disabled ? => select
-      this.setState({ selectedTimes: [value] });
+      this.setState({ selectedTimes: [value] }, this.handleStateChange);
     } else if (this.state.selectedTimes.length === 1) {
       // - single time selected => current NOT disabled ?
       const selectedMoment = moment(new Date(this.state.selectedTimes[0]));
@@ -124,7 +143,7 @@ export default class TimeRangeField extends Component {
         return false;
       });
       if (crossed) {
-        this.setState({ selectedTimes: [value] });
+        this.setState({ selectedTimes: [value] }, this.handleStateChange);
       } else {
         this.setState({ selectedTimes: updatedSelectedOptions }, this.handleStateChange);
       }
@@ -148,7 +167,7 @@ export default class TimeRangeField extends Component {
         this.setState({ selectedTimes: updatedSelectedOptions }, this.handleStateChange);
       } else {
         // - current NOT near selected ends ? (inner & outer) => select current & unselect ends
-        this.setState({ selectedTimes: [value] });
+        this.setState({ selectedTimes: [value] }, this.handleStateChange);
       }
     }
   }
@@ -164,29 +183,55 @@ export default class TimeRangeField extends Component {
   }
 
   renderTimeOptionRows = () => {
-    const timeOptionComponents = this.state.timeOptions.map((timeOption, index) => {
-      const momentHour = moment(new Date(timeOption));
-      momentHour.locale('en');
-      const text = this.props.minuteInterval === 60 ?
-        momentHour.format('hA').toString() : momentHour.format('h:mm A').toString();
-      const selected = this.state.selectedTimes.includes(timeOption);
-      const disabled = this.state.disabledTimes.includes(timeOption);
+    const rowTimeOptionProps = splitArray(this.state.timeOptions, this.props.numberOfItemsInOneRow);
+    const rowsWithSeparator = insertArray(rowTimeOptionProps, 'separator', 1);
+    return rowsWithSeparator.map((row, rowIndex) => {
+      // Row of Separator
+      if (row === 'separator') {
+        return (
+          <Separator
+            key={`${this.props.name}GridSeparators-${rowIndex}`}
+            style={this.getSeparatorStyle()}
+          />
+        );
+      }
+      // Row of options
+      const rowItemsWithSeparator = insertArray(row, 'separator', 1);
+      const rowItemsToRender = rowItemsWithSeparator.map((item, itemIndex) => {
+        if (item === 'separator') {
+          return (
+            <SeparatorVertical
+              key={`${this.props.name}GridSeparators-${itemIndex}`}
+              style={this.getSeparatorStyle()}
+            />
+          );
+        }
+        const momentHour = moment(new Date(item));
+        momentHour.locale('en');
+        const text = this.props.minuteInterval === 60 ?
+          momentHour.format('hA').toString() : momentHour.format('h:mm A').toString();
+        const selected = this.state.selectedTimes.includes(item);
+        const disabled = this.state.disabledTimes.includes(item);
+        return (
+          <SelectOption
+            key={`timeOptions-${itemIndex}`}
+            text={text}
+            value={item}
+            selected={selected}
+            disabled={disabled}
+            textStyle={this.props.optionTextStyle}
+          />
+        );
+      });
       return (
-        <SelectOption
-          key={`timeOptions-${index}`}
-          text={text}
-          value={timeOption}
-          selected={selected}
-          disabled={disabled}
-        />
+        <View key={`${this.props.name}GridRows-${rowIndex}`} style={styles.optionRowContainer}>
+          {rowItemsToRender}
+        </View>
       );
     });
+  }
+  renderTimeOptionList = () => {
 
-    return (
-      <View style={styles.optionRowContainer}>
-        {timeOptionComponents}
-      </View>
-    );
   }
 
   render() {
@@ -194,7 +239,7 @@ export default class TimeRangeField extends Component {
       <View
         style={[
           formFieldStyles.fieldContainer,
-          // { height: this.fieldHeight },
+          { height: this.fieldHeight },
         ]}
       >
         <Label title={this.props.title} labelContainerStyle={this.context.labelContainerStyle} />
@@ -206,6 +251,7 @@ export default class TimeRangeField extends Component {
           ]}
         >
           {this.props.grid && this.renderTimeOptionRows()}
+          {!this.props.grid && this.renderTimeOptionList()}
         </View>
       </View>
     );

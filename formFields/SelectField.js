@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import { insertArray, splitArray } from '../utils';
-import { optionContextTypes, selectPropTypes, selectDefaultProps } from '../propTypes/selectField';
+import { optionContextTypes, selectDefaultProps, selectPropTypes } from '../propTypes/selectField';
 
 import { BASE_GRID_HEIGHT } from '../constants/layout';
 import Label from './Label';
@@ -157,6 +157,7 @@ export default class SelectField extends Component {
             value={item.value}
             selected={Boolean(this.state.selectedOptions[item.value])}
             disabled={this.state.selectedOptions[item.value] === false}
+            textStyle={this.props.optionTextStyle}
           />
         );
       });
@@ -187,6 +188,7 @@ export default class SelectField extends Component {
             value={item.value}
             selected={Boolean(this.state.selectedOptions[item.value])}
             disabled={this.state.selectedOptions[item.value] === false}
+            textStyle={this.props.optionTextStyle}
           />
         );
       })
@@ -209,8 +211,8 @@ export default class SelectField extends Component {
             this.context.inputContainerStyle,
           ]}
         >
-          {!this.props.grid && this.renderOptionList()}
           {this.props.grid && this.renderOptionRows()}
+          {!this.props.grid && this.renderOptionList()}
         </View>
       </View>
     );

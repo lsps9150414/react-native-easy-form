@@ -1,7 +1,7 @@
-import { PropTypes } from 'react';
-import { View } from 'react-native';
-
+import { Text, View } from 'react-native';
 import { formFieldPropTypes, formToFieldPropTypes } from './index';
+
+import { PropTypes } from 'react';
 
 export const selectPropTypes = {
   ...formFieldPropTypes,
@@ -9,6 +9,7 @@ export const selectPropTypes = {
   grid: PropTypes.bool,
   numberOfItemsInOneRow: PropTypes.number,
   separatorStyle: View.propTypes.style,
+  optionTextStyle: Text.propTypes.style,
 };
 
 export const selectDefaultProps = {
