@@ -19,12 +19,16 @@ const propTypes = {
   ]).isRequired,
   selected: PropTypes.bool,
   disabled: PropTypes.bool,
+  textStyle: Text.propTypes.style,
 };
+
 const defaultProps = {
 };
+
 const contextTypes = {
   ...optionContextTypes,
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -84,6 +88,7 @@ export default class SelectOption extends Component {
           style={[
             formFieldStyles.inputText,
             styles.text,
+            Boolean(this.props.textStyle) && this.props.textStyle,
             selected && styles.selectedText,
             selected && Boolean(this.activeTextColor) && { color: this.activeTextColor },
             disabled && styles.disabledText,
