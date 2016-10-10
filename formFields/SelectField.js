@@ -46,14 +46,12 @@ export default class SelectField extends Component {
     super(props);
     this.state = {
       selectedOptions: context.formData[props.name] || {},
+      fieldHeight: this.getFieldHeight(context.baseGridHeight),
     };
   }
   getChildContext = () => ({
     handleOnPress: this.handleOptionOnPress,
   })
-  componentWillMount() {
-    this.setFieldHeight();
-  }
   componentWillReceiveProps(nextProps, nextContext) {
     this.updateSelectedFromFormData(nextContext.formData[this.props.name]);
   }
@@ -63,9 +61,13 @@ export default class SelectField extends Component {
       (Math.ceil(React.Children.count(this.props.children) / this.props.numberOfItemsInOneRow))
       : React.Children.count(this.props.children)
   )
-  setFieldHeight = () => {
-    this.fieldHeight = this.context.baseGridHeight ?
-      (this.context.baseGridHeight * this.getRowCount()) : (BASE_GRID_HEIGHT * this.getRowCount());
+  getFieldHeight = (baseGridHeight) => {
+    if (Boolean(baseGridHeight)) {
+      return (baseGridHeight * this.getRowCount());
+    } else if (Boolean(this.context) && Boolean(this.context.baseGridHeight)) {
+      return (this.context.baseGridHeight * this.getRowCount());
+    }
+    return (BASE_GRID_HEIGHT * this.getRowCount());
   }
 
   getOptionProps = () => (
@@ -200,7 +202,7 @@ export default class SelectField extends Component {
       <View
         style={[
           formFieldStyles.fieldContainer,
-          { height: this.fieldHeight },
+          { height: this.getFieldHeight() },
         ]}
       >
         <Label title={this.props.title} labelContainerStyle={this.context.labelContainerStyle} />

@@ -51,27 +51,39 @@ const styles = StyleSheet.create({
 export default class TimeRangeField extends Component {
   constructor(props, context) {
     super(props);
+    this.initTimeOptions = this.validateOptionTimes() ? this.initTimeOptions() : [];
     this.state = {
-      timeOptions: this.validateOptionTimes() ? this.initTimeOptions() : [],
+      timeOptions: this.initTimeOptions,
       selectedTimes: [],
       disabledTimes: this.getDisabledTimesfromFormData(context) || [],
+      fieldHeight: this.getFieldHeight(context.baseGridHeight),
     };
   }
   getChildContext = () => ({
     handleOnPress: this.handleOptionOnPress,
   })
-  componentWillMount() {
-    this.setFieldHeight();
-  }
 
-  getRowCount = () => (
-    this.props.grid ?
-      (Math.ceil(this.state.timeOptions.length / this.props.numberOfItemsInOneRow))
+  getRowCount = () => {
+    if (Boolean(this.state)) {
+      return (
+        this.props.grid ?
+          (Math.ceil(this.state.timeOptions.length / this.props.numberOfItemsInOneRow))
+          : React.Children.count(this.props.children)
+      );
+    }
+    return (
+      this.props.grid ?
+      (Math.ceil(this.initTimeOptions.length / this.props.numberOfItemsInOneRow))
       : React.Children.count(this.props.children)
-  )
-  setFieldHeight = () => {
-    this.fieldHeight = this.context.baseGridHeight ?
-      (this.context.baseGridHeight * this.getRowCount()) : (BASE_GRID_HEIGHT * this.getRowCount());
+    );
+  }
+  getFieldHeight = (baseGridHeight) => {
+    if (Boolean(baseGridHeight)) {
+      return (baseGridHeight * this.getRowCount());
+    } else if (Boolean(this.context) && Boolean(this.context.baseGridHeight)) {
+      return (this.context.baseGridHeight * this.getRowCount());
+    }
+    return (BASE_GRID_HEIGHT * this.getRowCount());
   }
   getSeparatorStyle = () => {
     if (Boolean(this.context.theme) && Boolean(this.context.theme.separatorColor)) {
@@ -239,7 +251,7 @@ export default class TimeRangeField extends Component {
       <View
         style={[
           formFieldStyles.fieldContainer,
-          { height: this.fieldHeight },
+          { height: this.getFieldHeight() },
         ]}
       >
         <Label title={this.props.title} labelContainerStyle={this.context.labelContainerStyle} />
