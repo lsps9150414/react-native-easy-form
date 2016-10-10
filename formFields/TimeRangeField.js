@@ -6,7 +6,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { insertArray, splitArray } from '../utils';
+import { extendArray, insertArray, splitArray } from '../utils';
 import { optionContextTypes, selectDefaultProps, selectPropTypes } from '../propTypes/selectField';
 
 import { BASE_GRID_HEIGHT } from '../constants/layout';
@@ -196,6 +196,10 @@ export default class TimeRangeField extends Component {
 
   renderTimeOptionRows = () => {
     const rowTimeOptionProps = splitArray(this.state.timeOptions, this.props.numberOfItemsInOneRow);
+    extendArray(
+      rowTimeOptionProps[rowTimeOptionProps.length - 1],
+      'empty', this.props.numberOfItemsInOneRow
+    );
     const rowsWithSeparator = insertArray(rowTimeOptionProps, 'separator', 1);
     return rowsWithSeparator.map((row, rowIndex) => {
       // Row of Separator
@@ -209,13 +213,22 @@ export default class TimeRangeField extends Component {
       }
       // Row of options
       const rowItemsWithSeparator = insertArray(row, 'separator', 1);
+      let emptySlotReachedFlag = false;
       const rowItemsToRender = rowItemsWithSeparator.map((item, itemIndex) => {
         if (item === 'separator') {
           return (
             <SeparatorVertical
               key={`${this.props.name}GridSeparators-${itemIndex}`}
-              style={this.getSeparatorStyle()}
+              style={[
+                this.getSeparatorStyle(),
+                emptySlotReachedFlag && { borderColor: 'transparent' },
+              ]}
             />
+          );
+        } else if (item === 'empty') {
+          emptySlotReachedFlag = true;
+          return (
+            <View key={`${this.props.name}GridSeparators-${itemIndex}`} style={{ flex: 1 }} />
           );
         }
         const momentHour = moment(new Date(item));

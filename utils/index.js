@@ -25,3 +25,13 @@ export const insertArray = (array = [], insertItem, interval = 1, insertFirst = 
   }
   return splitedArrays.reduce((p, c) => p.concat(c));
 };
+
+export const extendArray = (array = [], extendItem, targetLength) => {
+  if (array.length < targetLength) {
+    while (array.length !== targetLength) {
+      array.push(extendItem);
+    }
+    return array;
+  }
+  return false;
+};
