@@ -6,6 +6,7 @@ import {
   View,
 } from 'react-native';
 
+import { SEPERATOR_COLOR } from '../../constants/color';
 import { formToFieldPropTypes } from '../../propTypes';
 import { separatorPropTypes } from '../../propTypes/components';
 
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   },
   horizontal: {
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: '#ccc',
+    borderColor: SEPERATOR_COLOR,
   },
 });
 

@@ -1,6 +1,10 @@
 import 'moment/locale/zh-tw';
 
 import {
+  ACTIVE_COLOR,
+  DANGER_COLOR,
+} from '../../constants/color';
+import {
   Animated,
   DatePickerIOS,
   Modal,
@@ -102,7 +106,7 @@ export default class IosDatePicker extends Component {
       <Text
         style={[
           styles.controlButtonText,
-          { color: 'red' },
+          { color: DANGER_COLOR },
           this.theme && this.theme.dangerColor && { color: this.theme.dangerColor },
         ]}
       >
@@ -119,7 +123,7 @@ export default class IosDatePicker extends Component {
       <Text
         style={[
           styles.controlButtonText,
-          { color: 'blue', fontWeight: 'bold' },
+          { color: ACTIVE_COLOR, fontWeight: 'bold' },
           this.theme && this.theme.activeColor && { color: this.theme.activeColor },
         ]}
       >
