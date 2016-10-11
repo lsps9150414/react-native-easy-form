@@ -11,7 +11,8 @@ import { formFieldStyles } from '../styles';
 
 const propTypes = {
   title: PropTypes.string.isRequired,
-  labelContainerStyle: View.propTypes.style,
+  containerStyle: View.propTypes.style,
+  textStyle: Text.propTypes.style,
 };
 
 const defaultProps = {};
@@ -20,8 +21,10 @@ export default class Label extends Component {
 
   render() {
     return (
-      <View style={[formFieldStyles.labelContainer, this.props.labelContainerStyle]}>
-        <Text style={formFieldStyles.label}>{this.props.title}</Text>
+      <View style={[formFieldStyles.labelContainer, this.props.containerStyle]}>
+        <Text style={[formFieldStyles.label, this.props.textStyle]}>
+          {this.props.title}
+        </Text>
       </View>
     );
   }

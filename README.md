@@ -12,7 +12,7 @@ An easy to use modularized and customizable React Native form component.
 - [x] Grid/List view for `<SelectField />`
 - [x] `<DateField>`
 - [x] `<TimeRangeField>`
-- [ ] Support custom `<SelectOption />` component (pass props from `<SelectField>` via context)
+- [x] Support custom `<SelectOption />` component (pass props from `<SelectField>` via context)
 
 #### Future
 - [ ] `<DateRangeField>`
@@ -24,11 +24,14 @@ An easy to use modularized and customizable React Native form component.
 ### Styles
 #### v1.0
 - [x] Set `<Separator>` color with theme
-- [ ] Set label text color with theme textColor
-- [ ] Set input text color with theme textColor
-- [ ] Customizable label text style
-- [x] Customizable option text style
 - [x] Customizable `<Separator>` style
+- [ ] Set label text style with form prop `labelTextStyle`
+- [ ] Set label text color with theme textColor
+- [ ] Customizable label text style
+- [ ] Set input text style with form prop `inputTextStyle`
+- [ ] Set input text color with theme textColor
+- [ ] Customizable input text style
+- [x] Customizable option text style
 
 #### Future
 - [ ] Customizable `<SelectOption />` container style

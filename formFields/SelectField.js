@@ -15,6 +15,7 @@ import Label from './Label';
 import SelectOption from './SelectOption';
 import Separator from '../components/separators/Separator';
 import SeparatorVertical from '../components/separators/SeparatorVertical';
+import { THEME } from '../constants/color';
 import { formFieldContextTypes } from '../propTypes';
 import { formFieldStyles } from '../styles';
 
@@ -92,6 +93,12 @@ export default class SelectField extends Component {
     }
     return (this.props.separatorStyle);
   }
+  getFormPropsForCustomOptionView = () => ({
+    baseGridHeight: this.context.baseGridHeight || BASE_GRID_HEIGHT,
+    theme: { ...THEME, ...this.context.theme },
+    labelContainerStyle: this.context.labelContainerStyle,
+    inputContainerStyle: this.context.inputContainerStyle,
+  })
 
   updateSelectedFromFormData = (selectedOptions) => {
     if (Boolean(selectedOptions)) {
@@ -189,7 +196,7 @@ export default class SelectField extends Component {
             disabled={this.state.selectedOptions[item.value] === false}
             textStyle={this.props.optionTextStyle}
             customOptionView={this.props.customOptionView}
-            formProps={{ ...this.context, baseGridHeight: BASE_GRID_HEIGHT }}
+            formProps={this.getFormPropsForCustomOptionView()}
           />
         );
       });
@@ -224,7 +231,7 @@ export default class SelectField extends Component {
             disabled={this.state.selectedOptions[item.value] === false}
             textStyle={this.props.optionTextStyle}
             customOptionView={this.props.customOptionView}
-            formProps={{ ...this.context, baseGridHeight: BASE_GRID_HEIGHT }}
+            formProps={this.getFormPropsForCustomOptionView()}
           />
         );
       })
@@ -240,7 +247,11 @@ export default class SelectField extends Component {
           this.props.customOptionHeight && { height: null },
         ]}
       >
-        <Label title={this.props.title} labelContainerStyle={this.context.labelContainerStyle} />
+        <Label
+          title={this.props.title}
+          containerStyle={this.context.labelContainerStyle}
+          textStyle={this.context.labelTextStyle}
+        />
         <View
           style={[
             formFieldStyles.inputContainer,

@@ -295,7 +295,11 @@ export default class TimeRangeField extends Component {
           { height: this.getFieldHeight() },
         ]}
       >
-        <Label title={this.props.title} labelContainerStyle={this.context.labelContainerStyle} />
+        <Label
+          title={this.props.title}
+          containerStyle={this.context.labelContainerStyle}
+          textStyle={this.context.labelTextStyle}
+        />
         <View
           style={[
             formFieldStyles.inputContainer,

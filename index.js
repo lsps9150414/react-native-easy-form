@@ -32,7 +32,9 @@ export default class EasyForm extends React.Component {
     formData: this.state.formData,
     handleValueChange: this.handleFormFieldValueChange,
     labelContainerStyle: this.props.labelContainerStyle,
+    labelTextStyle: this.props.labelTextStyle,
     inputContainerStyle: this.props.inputContainerStyle,
+    inputTextStyle: this.props.inputTextStyle,
     theme: this.props.theme,
     baseGridHeight: this.props.baseGridHeight,
   })
@@ -62,9 +64,9 @@ EasyForm.propTypes = propTypes;
 EasyForm.defaultProps = defaultProps;
 EasyForm.childContextTypes = childContextTypes;
 
-EasyForm.TextInputField = TextInputField;
-EasyForm.DateField = DateField;
-EasyForm.TimeRangeField = TimeRangeField;
 EasyForm.SelectField = SelectField;
 EasyForm.SelectOption = SelectOption;
+EasyForm.TimeRangeField = TimeRangeField;
+EasyForm.DateField = DateField;
+EasyForm.TextInputField = TextInputField;
 EasyForm.Separator = Separator;

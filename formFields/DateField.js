@@ -58,7 +58,11 @@ export default class DateField extends Component {
           Boolean(this.context.baseGridHeight) && { height: this.context.baseGridHeight },
         ]}
       >
-        <Label title={this.props.title} labelContainerStyle={this.context.labelContainerStyle} />
+        <Label
+          title={this.props.title}
+          containerStyle={this.context.labelContainerStyle}
+          textStyle={this.context.labelTextStyle}
+        />
         <View style={[formFieldStyles.inputContainer, this.context.inputContainerStyle]}>
           <DatePicker
             date={this.state.date}
