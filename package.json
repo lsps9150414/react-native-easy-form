@@ -13,9 +13,12 @@
   "keywords": [
     "react-native",
     "react",
-    "form",
     "component",
-    "easy"
+    "form",
+    "input",
+    "easy",
+    "ios",
+    "android"
   ],
   "author": "Philip Chen <lsps9150414@gmail.com>",
   "license": "MIT",

@@ -1,6 +1,24 @@
 # react-native-easy-form
 An easy to use modularized and customizable React Native form component.
 
+## Installation
+`npm i react-native-easy-form --save`
+
+## Available Fields
+- SelectField
+- SelectOption
+- TimeRangeField
+- DateField
+- TextInputField
+- Separator
+
+### SelectField
+### SelectOption
+### TimeRangeField
+### DateField
+### TextInputField
+### Separator
+
 ## Roadmap
 ### Data
 #### v1.0
