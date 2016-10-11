@@ -3,6 +3,7 @@ import { View/* , Text */ } from 'react-native';
 import { PropTypes } from 'react';
 
 export const formToFieldPropTypes = {
+  baseGridHeight: PropTypes.number,
   theme: PropTypes.shape({
     activeColor: PropTypes.string,
     disabledColor: PropTypes.string,
@@ -12,7 +13,6 @@ export const formToFieldPropTypes = {
     disabledTextColor: PropTypes.string,
     separatorColor: PropTypes.string,
   }),
-  baseGridHeight: PropTypes.number,
   labelContainerStyle: View.propTypes.style,
   inputContainerStyle: View.propTypes.style,
 };

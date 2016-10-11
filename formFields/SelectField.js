@@ -1,5 +1,6 @@
 import React, {
   Component,
+  PropTypes,
 } from 'react';
 import {
   StyleSheet,
@@ -9,6 +10,7 @@ import { extendArray, insertArray, splitArray } from '../utils';
 import { optionContextTypes, selectDefaultProps, selectPropTypes } from '../propTypes/selectField';
 
 import { BASE_GRID_HEIGHT } from '../constants/layout';
+import CustomSelectOptionWrapper from './CustomSelectOptionWrapper';
 import Label from './Label';
 import SelectOption from './SelectOption';
 import Separator from '../components/separators/Separator';
@@ -18,6 +20,9 @@ import { formFieldStyles } from '../styles';
 
 const propTypes = {
   ...selectPropTypes,
+  customOptionView: PropTypes.func,
+  customOptionProps: PropTypes.arrayOf(PropTypes.object),
+  customOptionHeight: PropTypes.bool,
 };
 const defaultProps = {
   ...selectDefaultProps,
@@ -56,11 +61,16 @@ export default class SelectField extends Component {
     this.updateSelectedFromFormData(nextContext.formData[this.props.name]);
   }
 
-  getRowCount = () => (
-    this.props.grid ?
-      (Math.ceil(React.Children.count(this.props.children) / this.props.numberOfItemsInOneRow))
-      : React.Children.count(this.props.children)
-  )
+  getRowCount = () => {
+    if (Boolean(this.props.customOptionProps) && Boolean(this.props.customOptionView)) {
+      return this.props.grid ?
+        Math.ceil(this.props.customOptionProps.length / this.props.numberOfItemsInOneRow)
+        : this.props.customOptionProps.length;
+    }
+    return this.props.grid ?
+      Math.ceil(React.Children.count(this.props.children) / this.props.numberOfItemsInOneRow)
+      : React.Children.count(this.props.children);
+  }
   getFieldHeight = (baseGridHeight) => {
     if (Boolean(baseGridHeight)) {
       return (baseGridHeight * this.getRowCount());
@@ -70,9 +80,12 @@ export default class SelectField extends Component {
     return (BASE_GRID_HEIGHT * this.getRowCount());
   }
 
-  getOptionProps = () => (
-    React.Children.map(this.props.children, child => child.props)
-  )
+  getOptionProps = () => {
+    if (Boolean(this.props.customOptionProps) && Boolean(this.props.customOptionView)) {
+      return this.props.customOptionProps;
+    }
+    return React.Children.map(this.props.children, child => child.props);
+  }
   getSeparatorStyle = () => {
     if (Boolean(this.context.theme) && Boolean(this.context.theme.separatorColor)) {
       return ({ borderColor: this.context.theme.separatorColor, ...this.props.separatorStyle });
@@ -135,6 +148,9 @@ export default class SelectField extends Component {
       'empty', this.props.numberOfItemsInOneRow
     );
     const rowsWithSeparator = insertArray(rowOptionProps, 'separator', 1);
+    const SelectOptionComponent = Boolean(this.props.customOptionView) ?
+      CustomSelectOptionWrapper : SelectOption;
+
     return rowsWithSeparator.map((row, rowIndex) => {
       // Row of Separator
       if (row === 'separator') {
@@ -166,13 +182,14 @@ export default class SelectField extends Component {
           );
         }
         return (
-          <SelectOption
+          <SelectOptionComponent
             key={`${this.props.name}Options-${itemIndex}`}
-            text={item.text}
-            value={item.value}
+            {...item}
             selected={Boolean(this.state.selectedOptions[item.value])}
             disabled={this.state.selectedOptions[item.value] === false}
             textStyle={this.props.optionTextStyle}
+            customOptionView={this.props.customOptionView}
+            formProps={{ ...this.context, baseGridHeight: BASE_GRID_HEIGHT }}
           />
         );
       });
@@ -186,6 +203,9 @@ export default class SelectField extends Component {
   renderOptionList = () => {
     const optionProps = this.getOptionProps();
     const itemsToRender = insertArray(optionProps, 'separator', 1);
+    const SelectOptionComponent = Boolean(this.props.customOptionView) ?
+      CustomSelectOptionWrapper : SelectOption;
+
     return (
       itemsToRender.map((item, index) => {
         if (item === 'separator') {
@@ -197,13 +217,14 @@ export default class SelectField extends Component {
           );
         }
         return (
-          <SelectOption
+          <SelectOptionComponent
             key={`${this.props.name}Options-${index}`}
-            text={item.text}
-            value={item.value}
+            {...item}
             selected={Boolean(this.state.selectedOptions[item.value])}
             disabled={this.state.selectedOptions[item.value] === false}
             textStyle={this.props.optionTextStyle}
+            customOptionView={this.props.customOptionView}
+            formProps={{ ...this.context, baseGridHeight: BASE_GRID_HEIGHT }}
           />
         );
       })
@@ -216,6 +237,7 @@ export default class SelectField extends Component {
         style={[
           formFieldStyles.fieldContainer,
           { height: this.getFieldHeight() },
+          this.props.customOptionHeight && { height: null },
         ]}
       >
         <Label title={this.props.title} labelContainerStyle={this.context.labelContainerStyle} />

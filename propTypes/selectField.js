@@ -12,6 +12,17 @@ export const selectPropTypes = {
   optionTextStyle: Text.propTypes.style,
 };
 
+export const selectOptionPropTypes = {
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+  text: PropTypes.string,
+  selected: PropTypes.bool,
+  disabled: PropTypes.bool,
+  textStyle: Text.propTypes.style,
+};
+
 export const selectDefaultProps = {
   multipleSelections: false,
   grid: false,

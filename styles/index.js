@@ -32,3 +32,26 @@ export const dateFieldStyles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export const SelectOptionStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    textAlign: 'center',
+  },
+  selected: {
+    backgroundColor: '#666',
+  },
+  selectedText: {
+    color: '#fff',
+  },
+  disabled: {
+    backgroundColor: '#aaa',
+  },
+  disabledText: {
+    color: '#ddd',
+  },
+});
