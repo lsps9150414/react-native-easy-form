@@ -1,4 +1,7 @@
-export const splitArray = (array = [], itemAmount = 1) => {
+export const splitArray = (array, itemAmount = 1) => {
+  if ((Array.isArray(array) === false) || array.length <= itemAmount) {
+    return false;
+  }
   const arrayToSplit = array.slice();
   const splitedArrays = [];
   while (arrayToSplit.length > 0) {
@@ -7,8 +10,12 @@ export const splitArray = (array = [], itemAmount = 1) => {
   return splitedArrays;
 };
 
-export const insertArray = (array = [], insertItem, interval = 1, insertFirst = false) => {
+export const insertArray = (array, insertItem, interval = 1, insertFirst = false) => {
+  if ((Array.isArray(array) === false) || array.length <= interval) {
+    return false;
+  }
   const splitedArrays = splitArray(array, interval);
+  if (!splitedArrays) { return false; }
   if (insertFirst) {
     splitedArrays.forEach((splitedArray) => {
       splitedArray.unshift(insertItem);
@@ -26,7 +33,8 @@ export const insertArray = (array = [], insertItem, interval = 1, insertFirst = 
   return splitedArrays.reduce((p, c) => p.concat(c));
 };
 
-export const extendArray = (array = [], extendItem, targetLength) => {
+export const extendArray = (array, extendItem, targetLength) => {
+  if (!Array.isArray(array)) { return false; }
   if (array.length < targetLength) {
     while (array.length !== targetLength) {
       array.push(extendItem);
