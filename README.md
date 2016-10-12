@@ -35,7 +35,7 @@ An easy to use modularized and customizable React Native form component.
 #### Future
 - [ ] `<DateRangeField>`
 - [ ] `<NumberRangeField>` for integer/floating point
-- [ ] `<PickerField />` as native `Picker` (iOS: wrap iOS Picker/action sheet with modal)
+- [ ] `<PickerField>` as native `Picker` (iOS: wrap iOS Picker/action sheet with modal)
 - [ ] Support time/dateTime picking mode (`<DateField>` => `<DateTimeField>`)
 - [ ] Support seconds in `<TimeRangeField>`
 
