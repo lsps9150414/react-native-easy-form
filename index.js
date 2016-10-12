@@ -1,5 +1,6 @@
 import { formFieldContextTypes, formPropTypes } from './propTypes';
 
+import { BASE_GRID_HEIGHT } from './constants/layout';
 import DateField from './formFields/DateField';
 import React from 'react';
 import SelectField from './formFields/SelectField';
@@ -10,6 +11,7 @@ import TimeRangeField from './formFields/TimeRangeField';
 import {
   View,
 } from 'react-native';
+import _ from 'lodash/lang';
 
 const propTypes = {
   ...formPropTypes,
@@ -36,11 +38,11 @@ export default class EasyForm extends React.Component {
     inputContainerStyle: this.props.inputContainerStyle,
     inputTextStyle: this.props.inputTextStyle,
     theme: this.props.theme,
-    baseGridHeight: this.props.baseGridHeight,
+    baseGridHeight: this.props.baseGridHeight || BASE_GRID_HEIGHT,
   })
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.formData !== this.props.formData) {
+    if (!_.isEqual(nextProps.formData, this.props.formData)) {
       this.setState({ formData: nextProps.formData });
     }
   }

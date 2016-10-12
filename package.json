@@ -33,6 +33,7 @@
     "react-native": "^0.34.1"
   },
   "dependencies": {
+    "lodash": "^4.16.4",
     "moment": "^2.15.1"
   }
 }

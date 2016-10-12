@@ -9,7 +9,6 @@ import {
 import { extendArray, insertArray, splitArray } from '../utils';
 import { optionContextTypes, selectDefaultProps, selectPropTypes } from '../propTypes/selectField';
 
-import { BASE_GRID_HEIGHT } from '../constants/layout';
 import CustomSelectOptionWrapper from './CustomSelectOptionWrapper';
 import Label from './Label';
 import SelectOption from './SelectOption';
@@ -75,10 +74,8 @@ export default class SelectField extends Component {
   getFieldHeight = (baseGridHeight) => {
     if (Boolean(baseGridHeight)) {
       return (baseGridHeight * this.getRowCount());
-    } else if (Boolean(this.context) && Boolean(this.context.baseGridHeight)) {
-      return (this.context.baseGridHeight * this.getRowCount());
     }
-    return (BASE_GRID_HEIGHT * this.getRowCount());
+    return (this.context.baseGridHeight * this.getRowCount());
   }
 
   getOptionProps = () => {
@@ -94,7 +91,7 @@ export default class SelectField extends Component {
     return (this.props.separatorStyle);
   }
   getFormPropsForCustomOptionView = () => ({
-    baseGridHeight: this.context.baseGridHeight || BASE_GRID_HEIGHT,
+    baseGridHeight: this.context.baseGridHeight,
     theme: { ...THEME, ...this.context.theme },
     labelContainerStyle: this.context.labelContainerStyle,
     inputContainerStyle: this.context.inputContainerStyle,
@@ -149,6 +146,7 @@ export default class SelectField extends Component {
 
   renderOptionRows = () => {
     const optionProps = this.getOptionProps();
+    if (!Boolean(optionProps)) { return null; }
     const rowOptionProps = splitArray(optionProps, this.props.numberOfItemsInOneRow);
     extendArray(
       rowOptionProps[rowOptionProps.length - 1],
@@ -209,7 +207,11 @@ export default class SelectField extends Component {
   }
   renderOptionList = () => {
     const optionProps = this.getOptionProps();
-    const itemsToRender = insertArray(optionProps, 'separator', 1);
+    if (!Boolean(optionProps)) { return null; }
+    let itemsToRender = insertArray(optionProps, 'separator', 1);
+    if (!itemsToRender) {
+      itemsToRender = optionProps;
+    }
     const SelectOptionComponent = Boolean(this.props.customOptionView) ?
       CustomSelectOptionWrapper : SelectOption;
 
