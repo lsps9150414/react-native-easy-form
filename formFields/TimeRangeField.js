@@ -74,8 +74,8 @@ export default class TimeRangeField extends Component {
     if (Boolean(this.state)) {
       return (
         this.props.grid ?
-          (Math.ceil(this.state.timeOptions.length / this.props.numberOfItemsInOneRow))
-          : this.state.timeOptions.length
+          (Math.ceil(this.state.timeOptions.length / this.props.numberOfItemsInOneRow) || 1)
+          : (this.state.timeOptions.length || 1)
       );
     }
     return (
@@ -106,7 +106,9 @@ export default class TimeRangeField extends Component {
     if (moment(this.props.optionEndTime).isSameOrAfter(this.props.optionStartTime)) {
       return true;
     }
-    console.warn('"optionEndTime" should be same or after "optionStartTime"');
+    console.warn(
+      `Field: ${this.props.name}'s '"optionEndTime" should be same or after "optionStartTime"`
+    );
     return false;
   }
   initTimeOptions = () => {
@@ -135,11 +137,8 @@ export default class TimeRangeField extends Component {
       // - single time selected => current NOT disabled ?
       const selectedMoment = moment(new Date(this.state.selectedTimes[0]));
       const newSelectMoment = moment(new Date(value));
-      console.log('selectedMoment', selectedMoment.toDate());
-      console.log('newSelectMoment', newSelectMoment.toDate());
       let crossed = false;
       const updatedSelectedOptions = [];
-      console.log('disabledTimes', this.state.disabledTimes);
       this.state.disabledTimes.some((disabledTime) => {
         if (
           moment(new Date(disabledTime)).isBetween(selectedMoment, newSelectMoment, null, '[]') ||
@@ -202,6 +201,7 @@ export default class TimeRangeField extends Component {
   }
 
   renderTimeOptionRows = () => {
+    if (this.state.timeOptions.length === 0) { return null; }
     const rowTimeOptionProps = splitArray(this.state.timeOptions, this.props.numberOfItemsInOneRow);
     extendArray(
       rowTimeOptionProps[rowTimeOptionProps.length - 1],
@@ -263,6 +263,7 @@ export default class TimeRangeField extends Component {
     });
   }
   renderTimeOptionList = () => {
+    if (this.state.timeOptions.length === 0) { return null; }
     const itemsToRender = insertArray(this.state.timeOptions, 'separator', 1);
     return (
       itemsToRender.map((item, index) => {
@@ -295,6 +296,7 @@ export default class TimeRangeField extends Component {
   }
 
   render() {
+    console.log('[HEIGHT]', this.getFieldHeight());
     return (
       <View
         style={[

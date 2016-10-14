@@ -1,6 +1,5 @@
 import React, {
   Component,
-  PropTypes,
 } from 'react';
 import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 

@@ -64,8 +64,8 @@ export default class SelectField extends Component {
   getRowCount = () => {
     if (Boolean(this.props.customOptionProps) && Boolean(this.props.customOptionView)) {
       return this.props.grid ?
-        Math.ceil(this.props.customOptionProps.length / this.props.numberOfItemsInOneRow)
-        : this.props.customOptionProps.length;
+        (Math.ceil(this.props.customOptionProps.length / this.props.numberOfItemsInOneRow) || 1)
+        : (this.props.customOptionProps.length || 1);
     }
     return this.props.grid ?
       Math.ceil(React.Children.count(this.props.children) / this.props.numberOfItemsInOneRow)
