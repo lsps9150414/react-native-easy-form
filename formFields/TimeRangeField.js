@@ -296,7 +296,6 @@ export default class TimeRangeField extends Component {
   }
 
   render() {
-    console.log('[HEIGHT]', this.getFieldHeight());
     return (
       <View
         style={[
