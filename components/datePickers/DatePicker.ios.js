@@ -20,6 +20,7 @@ import React, {
 import { dateFieldStyles, formFieldStyles } from '../../styles';
 
 import { BASE_GRID_HEIGHT } from '../../constants/layout';
+import _ from 'lodash/lang';
 import { datePickerPropTypes } from '../../propTypes/dateField';
 import { formToFieldPropTypes } from '../../propTypes';
 import moment from 'moment';
@@ -75,7 +76,11 @@ export default class IosDatePicker extends Component {
     };
     this.theme = Boolean(props.theme) ? props.theme : false;
   }
-
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props.date, nextProps.date)) {
+      this.setState({ date: nextProps.date });
+    }
+  }
   onDateChange = (date) => { this.setState({ date }); }
 
   openModal = () => {
