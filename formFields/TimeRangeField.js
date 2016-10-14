@@ -202,14 +202,15 @@ export default class TimeRangeField extends Component {
     }
   }
   handleStateChange = () => {
-    if (this.props.onValueChange) {
-      this.props.onValueChange(this.props.name, this.state.selectedOptions);
-    }
-    this.context.handleValueChange(this.props.name, {
+    const state = {
       selectedStartTime: this.state.selectedTimes[0],
       selectedEndTime: this.state.selectedTimes[this.state.selectedTimes.length - 1],
       disabledTimes: this.state.disabledTimes,
-    });
+    };
+    if (this.props.onValueChange) {
+      this.props.onValueChange(this.props.name, state);
+    }
+    this.context.handleValueChange(this.props.name, state);
   }
 
   renderTimeOptionRows = () => {
