@@ -192,7 +192,7 @@ export default class TimeRangeField extends Component {
   }
   handleStateChange = () => {
     if (this.props.onValueChange) {
-      this.props.onValueChange(this.state.selectedOptions);
+      this.props.onValueChange(this.props.name, this.state.selectedOptions);
     }
     this.context.handleValueChange(this.props.name, {
       selectedStartTime: this.state.selectedTimes[0],
