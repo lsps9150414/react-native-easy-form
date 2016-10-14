@@ -51,9 +51,8 @@ const styles = StyleSheet.create({
 export default class TimeRangeField extends Component {
   constructor(props, context) {
     super(props);
-    this.initTimeOptions = this.validateOptionTimes() ? this.initTimeOptions() : [];
     this.state = {
-      timeOptions: this.initTimeOptions,
+      timeOptions: [],
       selectedTimes: [],
       disabledTimes: this.getDisabledTimesfromFormData(context),
       fieldHeight: this.getFieldHeight(context.baseGridHeight),
@@ -62,8 +61,21 @@ export default class TimeRangeField extends Component {
   getChildContext = () => ({
     handleOnPress: this.handleOptionOnPress,
   })
-
+  componentWillMount() {
+    this.setState({
+      timeOptions: this.validateOptionTimes() ? this.initTimeOptions(this.props) : [],
+    });
+  }
   componentWillReceiveProps(nextProps, nextContext) {
+    if (
+      !_.isEqual(this.props.optionStartTime, nextProps.optionStartTime) ||
+      !_.isEqual(this.props.optionEndTime, nextProps.optionEndTime) ||
+      (this.props.minuteInterval !== nextProps.minuteInterval)
+    ) {
+      this.setState({
+        timeOptions: this.validateOptionTimes() ? this.initTimeOptions(nextProps) : [],
+      });
+    }
     if (!_.isEqual(nextContext, this.context)) {
       this.setState({
         disabledTimes: this.getDisabledTimesfromFormData(nextContext),
@@ -111,18 +123,18 @@ export default class TimeRangeField extends Component {
     );
     return false;
   }
-  initTimeOptions = () => {
+  initTimeOptions = (props) => {
     const timeOptions = [];
-    const optionStartMoment = moment(this.props.optionStartTime);
-    const optionEndMoment = moment(this.props.optionEndTime);
+    const optionStartMoment = moment(props.optionStartTime);
+    const optionEndMoment = moment(props.optionEndTime);
     for (
       let i = moment(optionStartMoment);
       i.isBefore(optionEndMoment);
-      i.add(this.props.minuteInterval, 'm')
+      i.add(props.minuteInterval, 'm')
     ) {
       timeOptions.push(i.toDate().toString());
     }
-    timeOptions.push(this.props.optionEndTime.toString());
+    timeOptions.push(props.optionEndTime.toString());
     return timeOptions;
   }
 
