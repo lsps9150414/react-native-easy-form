@@ -68,8 +68,8 @@ export default class SelectField extends Component {
         : (this.props.customOptionProps.length || 1);
     }
     return this.props.grid ?
-      Math.ceil(React.Children.count(this.props.children) / this.props.numberOfItemsInOneRow)
-      : React.Children.count(this.props.children);
+      (Math.ceil(React.Children.count(this.props.children) / this.props.numberOfItemsInOneRow) || 1)
+      : (React.Children.count(this.props.children) || 1);
   }
   getFieldHeight = (baseGridHeight) => {
     if (Boolean(baseGridHeight)) {
@@ -82,7 +82,10 @@ export default class SelectField extends Component {
     if (Boolean(this.props.customOptionProps) && Boolean(this.props.customOptionView)) {
       return this.props.customOptionProps;
     }
-    return React.Children.map(this.props.children, child => child.props);
+    if (Boolean(React.Children.toArray(this.props.children).length)) {
+      return React.Children.map(this.props.children, child => child.props);
+    }
+    return null;
   }
   getSeparatorStyle = () => {
     if (Boolean(this.context.theme) && Boolean(this.context.theme.separatorColor)) {
