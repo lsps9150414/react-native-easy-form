@@ -21,9 +21,11 @@ import { dateFieldStyles, formFieldStyles } from '../../styles';
 
 import { BASE_GRID_HEIGHT } from '../../constants/layout';
 import { datePickerPropTypes } from '../../propTypes/dateField';
+import { formToFieldPropTypes } from '../../propTypes';
 import moment from 'moment';
 
 const propTypes = {
+  ...formToFieldPropTypes,
   ...datePickerPropTypes,
   date: PropTypes.instanceOf(Date).isRequired,
   onDateChange: PropTypes.func.isRequired,
