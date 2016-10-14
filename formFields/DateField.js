@@ -2,7 +2,7 @@ import React, {
   Component,
   PropTypes,
 } from 'react';
-import { formFieldPropTypes, formFieldContextTypes } from '../propTypes';
+import { formFieldContextTypes, formFieldPropTypes } from '../propTypes';
 
 import DatePicker from '../components/datePickers/DatePicker';
 import Label from './Label';
@@ -48,6 +48,9 @@ export default class DateField extends Component {
     );
   }
   handleStateChange = () => {
+    if (this.props.onValueChange) {
+      this.props.onValueChange(this.props.name, this.state.date);
+    }
     this.context.handleValueChange(this.props.name, this.state.date);
   }
   render() {
