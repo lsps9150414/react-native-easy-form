@@ -22,7 +22,7 @@ export const formToFieldPropTypes = {
 export const formPropTypes = {
   ...formToFieldPropTypes,
   formData: PropTypes.object,
-  onFormValueChange: PropTypes.func.isRequired,
+  onFormDataChange: PropTypes.func.isRequired,
 };
 
 export const formFieldPropTypes = {
