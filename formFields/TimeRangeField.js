@@ -76,10 +76,23 @@ export default class TimeRangeField extends Component {
         timeOptions: this.validateOptionTimes() ? this.initTimeOptions(nextProps) : [],
       });
     }
-    if (!_.isEqual(nextContext, this.context)) {
-      this.setState({
-        disabledTimes: this.getDisabledTimesfromFormData(nextContext),
-      });
+    if (Boolean(nextContext.formData) && Boolean(nextContext.formData[this.props.name])) {
+      const fieldFormDataChanged = !_.isEqual(
+        nextContext.formData[this.props.name],
+        this.context.formData[this.props.name]
+      );
+      if (fieldFormDataChanged) {
+        const resetSelectedTimes =
+        !Boolean(nextContext.formData[this.props.name].selectedStartTime) ||
+        !Boolean(nextContext.formData[this.props.name].selectedEndTime);
+        // TODO: Create a setSelectedTimes() to handle selectedTimes from form data.
+        // setSelectedTimes() should return empty array when time range not valid.
+        // i.e. crossing any disabled times.
+        this.setState({
+          disabledTimes: this.getDisabledTimesfromFormData(nextContext),
+          selectedTimes: resetSelectedTimes ? [] : this.state.selectedTimes,
+        });
+      }
     }
   }
   getRowCount = () => {
@@ -143,10 +156,10 @@ export default class TimeRangeField extends Component {
   }
   toggleSelected = (value) => {
     if (this.state.selectedTimes.length === 0) {
-      // - nothing selected => current NOT disabled ? => select
+      // - nothing selected => select
       this.setState({ selectedTimes: [value] }, this.handleStateChange);
     } else if (this.state.selectedTimes.length === 1) {
-      // - single time selected => current NOT disabled ?
+      // - single time selected
       const selectedMoment = moment(new Date(this.state.selectedTimes[0]));
       const newSelectMoment = moment(new Date(value));
       let crossed = false;
@@ -178,7 +191,7 @@ export default class TimeRangeField extends Component {
         this.setState({ selectedTimes: updatedSelectedOptions }, this.handleStateChange);
       }
     } else {
-      // - time range selected => current NOT disabled ?
+      // - time range selected
       // - current near selected ends ? (inner & outer) => select current & unselect near end
       const beforeSelectedStartTime =
         moment(new Date(this.state.selectedTimes[0]))
