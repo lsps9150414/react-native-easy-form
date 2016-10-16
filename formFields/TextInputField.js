@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 export default class TextInputField extends React.Component {
   handleValueChange = (value) => {
     if (this.props.onValueChange) {
-      this.props.onValueChange(value);
+      this.props.onValueChange(this.props.name, value);
     }
     this.context.handleValueChange(this.props.name, value);
   }
