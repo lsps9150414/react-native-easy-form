@@ -1,6 +1,6 @@
 {
   "name": "react-native-easy-form",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An easy to use modularized and customizable React Native form component.",
   "main": "index.js",
   "scripts": {
