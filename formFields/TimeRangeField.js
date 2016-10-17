@@ -147,7 +147,6 @@ export default class TimeRangeField extends Component {
     ) {
       timeOptions.push(i.toDate().toString());
     }
-    timeOptions.push(props.optionEndTime.toString());
     return timeOptions;
   }
 
@@ -217,7 +216,10 @@ export default class TimeRangeField extends Component {
   handleStateChange = () => {
     const state = {
       selectedStartTime: new Date(this.state.selectedTimes[0]),
-      selectedEndTime: new Date(this.state.selectedTimes[this.state.selectedTimes.length - 1]),
+      selectedEndTime:
+        moment(
+          new Date(this.state.selectedTimes[this.state.selectedTimes.length - 1])
+        ).add(this.props.minuteInterval, 'm').toDate(),
       disabledTimes: this.state.disabledTimes,
     };
     if (this.props.onValueChange) {
