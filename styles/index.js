@@ -18,11 +18,13 @@ export const formFieldStyles = StyleSheet.create({
   },
   labelContainer: {
     flex: 1,
+    flexBasis: 0,
     justifyContent: 'center',
     backgroundColor: LABEL_BG_COLOR,
   },
   inputContainer: {
     flex: 3,
+    flexBasis: 0,
     justifyContent: 'center',
     backgroundColor: INPUT_BG_COLOR,
   },
