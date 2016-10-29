@@ -1,12 +1,12 @@
 import React, {
   Component,
 } from 'react';
+import { SelectOptionStyles, formFieldStyles } from '../styles';
 import {
   Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
-
-import { formFieldStyles, SelectOptionStyles } from '../styles';
 import { optionContextTypes, selectOptionPropTypes } from '../propTypes/selectField';
 
 const propTypes = {
@@ -41,29 +41,33 @@ export default class SelectOption extends Component {
     const disabled = this.props.disabled;
     return (
       <TouchableOpacity
-        style={[
-          SelectOptionStyles.container,
-          selected && SelectOptionStyles.selected,
-          selected && Boolean(this.activeColor) && { backgroundColor: this.activeColor },
-          disabled && SelectOptionStyles.disabled,
-          disabled && Boolean(this.disabledColor)
-            && { backgroundColor: this.disabledColor },
-        ]}
         onPress={this.handleOnPress}
         disabled={disabled}
+        style={[{ flex: 1 }]}
       >
-        <Text
+        <View
           style={[
-            formFieldStyles.inputText,
-            SelectOptionStyles.text,
-            Boolean(this.props.textStyle) && this.props.textStyle,
-            selected && SelectOptionStyles.selectedText,
-            selected && Boolean(this.activeTextColor) && { color: this.activeTextColor },
-            disabled && SelectOptionStyles.disabledText,
-            disabled && Boolean(this.disabledTextColor)
-              && { color: this.disabledTextColor },
+            SelectOptionStyles.container,
+            selected && SelectOptionStyles.selected,
+            selected && Boolean(this.activeColor) && { backgroundColor: this.activeColor },
+            disabled && SelectOptionStyles.disabled,
+            disabled && Boolean(this.disabledColor)
+              && { backgroundColor: this.disabledColor },
           ]}
-        >{this.props.text}</Text>
+        >
+          <Text
+            style={[
+              formFieldStyles.inputText,
+              SelectOptionStyles.text,
+              Boolean(this.props.textStyle) && this.props.textStyle,
+              selected && SelectOptionStyles.selectedText,
+              selected && Boolean(this.activeTextColor) && { color: this.activeTextColor },
+              disabled && SelectOptionStyles.disabledText,
+              disabled && Boolean(this.disabledTextColor)
+                && { color: this.disabledTextColor },
+            ]}
+          >{this.props.text}</Text>
+        </View>
       </TouchableOpacity>
     );
   }
