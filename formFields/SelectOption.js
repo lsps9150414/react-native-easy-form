@@ -43,7 +43,7 @@ export default class SelectOption extends Component {
       <TouchableOpacity
         onPress={this.handleOnPress}
         disabled={disabled}
-        style={[{ flex: 1 }]}
+        style={[{ flex: 1, flexBasis: 0 }]}
       >
         <View
           style={[
