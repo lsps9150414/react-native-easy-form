@@ -1,21 +1,30 @@
 import React, {
   Component,
-  PropTypes,
 } from 'react';
 
-import {
-  Text,
-} from 'react-native';
+import DatePicker from 'material-ui/DatePicker';
+import { datePickerComponentPropTypes } from '../../propTypes/dateField';
+import moment from 'moment';
 
-const propTypes = {};
+const propTypes = {
+  ...datePickerComponentPropTypes,
+};
 
 const defaultProps = {};
 
 export default class MyComponent extends Component {
-
+  handleDateChange = (event, date) => {
+    this.props.onDateChange(date);
+  }
   render() {
+    const momentDate = moment(this.props.date);
+    momentDate.locale('zh-tw');
     return (
-      <Text>This is the web date picker</Text>
+      <DatePicker
+        hintText={momentDate.format('Y / M / D  (ddd)')}
+        value={this.props.date}
+        onChange={this.handleDateChange}
+      />
     );
   }
 

@@ -4,6 +4,10 @@ An easy to use modularized and customizable React Native form component.
 ## Installation
 `npm i react-native-easy-form --save`
 
+## Usage
+Web version depends on material-ui, which uses react-tap-event-plugin:
+https://github.com/callemall/material-ui#react-tap-event-plugin
+
 ## Available Fields
 - SelectField
 - SelectOption
