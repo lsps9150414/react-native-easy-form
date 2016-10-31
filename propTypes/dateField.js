@@ -6,3 +6,9 @@ export const datePickerPropTypes = {
   maxDate: PropTypes.instanceOf(Date),
   minDate: PropTypes.instanceOf(Date),
 };
+
+export const datePickerComponentPropTypes = {
+  ...datePickerPropTypes,
+  date: PropTypes.instanceOf(Date).isRequired,
+  onDateChange: PropTypes.func.isRequired,
+};

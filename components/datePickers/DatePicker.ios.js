@@ -15,21 +15,18 @@ import {
 } from 'react-native';
 import React, {
   Component,
-  PropTypes,
 } from 'react';
 import { dateFieldStyles, formFieldStyles } from '../../styles';
 
 import { BASE_GRID_HEIGHT } from '../../constants/layout';
 import _ from 'lodash/lang';
-import { datePickerPropTypes } from '../../propTypes/dateField';
+import { datePickerComponentPropTypes } from '../../propTypes/dateField';
 import { formToFieldPropTypes } from '../../propTypes';
 import moment from 'moment';
 
 const propTypes = {
   ...formToFieldPropTypes,
-  ...datePickerPropTypes,
-  date: PropTypes.instanceOf(Date).isRequired,
-  onDateChange: PropTypes.func.isRequired,
+  ...datePickerComponentPropTypes,
 };
 
 const defaultProps = {};

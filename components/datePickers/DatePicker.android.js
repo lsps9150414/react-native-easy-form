@@ -7,17 +7,14 @@ import {
 } from 'react-native';
 import React, {
   Component,
-  PropTypes,
 } from 'react';
 import { dateFieldStyles, formFieldStyles } from '../../styles';
 
-import { datePickerPropTypes } from '../../propTypes/dateField';
+import { datePickerComponentPropTypes } from '../../propTypes/dateField';
 import moment from 'moment';
 
 const propTypes = {
-  ...datePickerPropTypes,
-  date: PropTypes.instanceOf(Date).isRequired,
-  onDateChange: PropTypes.func.isRequired,
+  ...datePickerComponentPropTypes,
 };
 
 const defaultProps = {};
